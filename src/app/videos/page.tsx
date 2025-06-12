@@ -1,3 +1,4 @@
+
 import type { Video } from '@/lib/types';
 import VideoCard from '@/components/VideoCard';
 import { Youtube, AlertTriangle } from 'lucide-react';
@@ -5,15 +6,28 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 async function getVideos(): Promise<Video[] | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002'}/api/videos`, {
+    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002'}/api/videos`;
+    const res = await fetch(apiUrl, {
       cache: 'no-store', // Or configure revalidation as needed
     });
+
     if (!res.ok) {
-      throw new Error(`Failed to fetch videos: ${res.statusText}`);
+      let errorMessage = `API request failed with status ${res.status}: ${res.statusText}`;
+      try {
+        // Try to parse the error response body as JSON
+        const errorData = await res.json();
+        if (errorData && errorData.message) {
+          errorMessage = errorData.message;
+        }
+      } catch (jsonError) {
+        // If parsing JSON fails, log it and stick with the original statusText
+        console.warn('Could not parse error response as JSON:', jsonError);
+      }
+      throw new Error(`Failed to fetch videos: ${errorMessage}`);
     }
     return res.json();
   } catch (error) {
-    console.error(error);
+    console.error(error); // This will log the enriched error message.
     return null;
   }
 }
@@ -40,7 +54,12 @@ export default async function VideosPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-destructive">We couldn't load the videos at this time. Please try again later.</p>
+            {/* The error message from getVideos() will be logged to the console.
+                We can display a user-friendly message here, or potentially the error.message if it's safe. */}
+            <p className="text-destructive">
+              We couldn't load the videos at this time. Please check the console for more details or try again later.
+              It's possible the YouTube API key is missing or invalid. Please ensure the YOUTUBE_API_KEY is correctly set in your server environment.
+            </p>
           </CardContent>
         </Card>
       ) : videos.length > 0 ? (
