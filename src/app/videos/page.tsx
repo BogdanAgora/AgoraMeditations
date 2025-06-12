@@ -8,7 +8,6 @@ async function getVideos(): Promise<Video[] | null> {
   try {
     const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002'}/api/videos`;
     const res = await fetch(apiUrl, {
-      cache: 'no-store', 
     });
 
     if (!res.ok) {

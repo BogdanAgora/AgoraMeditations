@@ -92,7 +92,7 @@ export async function GET() {
   console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}`);
 
   // Using search.list to get videos by channelId, ordered by date
-  const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${YOUTUBE_CHANNEL_ID}&maxResults=9&order=date&type=video&key=${apiKey}`;
+  const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${YOUTUBE_CHANNEL_ID}&maxResults=9&type=video&key=${apiKey}`;
   console.log('[API Route] Requesting YouTube API URL:', YOUTUBE_API_URL);
 
   try {

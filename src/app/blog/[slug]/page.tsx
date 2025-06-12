@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 // Helper to convert basic markdown to HTML (very simplified)
-function簡易MarkdownToHtml(markdown: string) {
+function simpleMarkdownToHtml(markdown: string) {
   // Replace newlines with <br /> for paragraphs
   let html = markdown
     .split(/\n\s*\n/) // Split by double newlines (paragraphs)
@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     notFound();
   }
 
-  const htmlContent = 簡易MarkdownToHtml(post.content);
+  const htmlContent = simpleMarkdownToHtml(post.content);
 
   return (
     <article className="max-w-3xl mx-auto py-8">
