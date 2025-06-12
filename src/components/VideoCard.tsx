@@ -1,3 +1,4 @@
+
 import type { Video } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
@@ -12,12 +13,14 @@ export default function VideoCard({ video }: VideoCardProps) {
     <Card className="overflow-hidden shadow-lg hover:shadow-xl smooth-transition flex flex-col h-full">
       <CardHeader className="p-0">
         <div className="aspect-video relative">
-          <Image 
-            src={video.thumbnailUrl} 
-            alt={video.title} 
-            layout="fill"
-            objectFit="cover"
+          <Image
+            src={video.thumbnailUrl}
+            alt={video.title}
+            width={480}
+            height={360}
+            className="w-full h-full object-cover"
             data-ai-hint={video.thumbnailAiHint || "youtube thumbnail"}
+            priority={video.id === '1'} // Prioritize loading for the first image if needed
           />
         </div>
       </CardHeader>
