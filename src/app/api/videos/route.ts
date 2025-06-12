@@ -5,11 +5,11 @@ import { NextResponse } from 'next/server';
 const videos: Video[] = [
   {
     id: '1',
-    title: 'Mystical Prayer in the Desert ✨ Sufi Ney Flute Meditation ✨ Timeless Tranquility & Inner Peace',
-    description: 'Embark on a mystical journey with the enchanting sounds of the Sufi Ney flute. This meditation music is designed to evoke timeless tranquility and deep inner peace.',
-    thumbnailUrl: 'https://i.ytimg.com/vi/f_a7yX9xPbk/hqdefault.jpg',
-    youtubeVideoId: 'f_a7yX9xPbk',
-    thumbnailAiHint: 'sufi ney flute desert',
+    title: 'Eternal OM CHANT for Deep Meditation, Positive Energy, Stress Relief and Inner Peace',
+    description: 'Immerse yourself in the sacred sound of the OM chant, a timeless mantra renowned for its profound healing and spiritual benefits. This eternal OM chant is meticulously crafted to guide you into deep meditation, cultivate positive energy, alleviate stress, and foster inner peace.',
+    thumbnailUrl: 'https://i.ytimg.com/vi/CtlQRv_Xmb0/hqdefault.jpg',
+    youtubeVideoId: 'CtlQRv_Xmb0',
+    thumbnailAiHint: 'om chant meditation',
   },
   {
     id: '2',
@@ -45,3 +45,4 @@ export async function GET() {
     return NextResponse.json({ message: 'Failed to load videos' }, { status: 500 });
   }
 }
+
