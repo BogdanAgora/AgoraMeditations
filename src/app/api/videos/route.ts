@@ -2,86 +2,109 @@
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-const YOUTUBE_CHANNEL_ID = 'UCsA1nJUPR0P81A6kMmxRAgw'; // Agora Meditations Channel ID
+// const YOUTUBE_CHANNEL_ID = 'UCsA1nJUPR0P81A6kMmxRAgw'; // Original Channel ID
 
-interface YouTubeThumbnail {
-  url: string;
-  width: number;
-  height: number;
-}
+// interface YouTubeThumbnail {
+//   url: string;
+//   width: number;
+//   height: number;
+// }
 
-interface YouTubeSnippet {
-  publishedAt: string;
-  channelId: string;
-  title: string;
-  description:string;
-  thumbnails: {
-    default?: YouTubeThumbnail;
-    medium?: YouTubeThumbnail;
-    high?: YouTubeThumbnail;
-    standard?: YouTubeThumbnail;
-    maxres?: YouTubeThumbnail;
-  };
-  channelTitle: string;
-  liveBroadcastContent: string;
-  publishTime: string;
-}
+// interface YouTubeSnippet {
+//   publishedAt: string;
+//   channelId: string;
+//   title: string;
+//   description:string;
+//   thumbnails: {
+//     default?: YouTubeThumbnail;
+//     medium?: YouTubeThumbnail;
+//     high?: YouTubeThumbnail;
+//     standard?: YouTubeThumbnail;
+//     maxres?: YouTubeThumbnail;
+//   };
+//   channelTitle: string;
+//   liveBroadcastContent: string;
+//   publishTime: string;
+// }
 
-// For search results, the 'id' is an object.
-interface YouTubeSearchItemId {
-  kind: string; // e.g., "youtube#video"
-  videoId: string;
-}
+// interface YouTubeSearchItemId {
+//   kind: string;
+//   videoId: string;
+// }
 
-interface YouTubeSearchItem {
-  kind: string; // e.g., "youtube#searchResult"
-  etag: string;
-  id: YouTubeSearchItemId;
-  snippet: YouTubeSnippet;
-}
+// interface YouTubeSearchItem {
+//   kind: string;
+//   etag: string;
+//   id: YouTubeSearchItemId;
+//   snippet: YouTubeSnippet;
+// }
 
-interface YouTubeAPIResponse {
-  kind: string;
-  etag: string;
-  nextPageToken?: string;
-  prevPageToken?: string;
-  regionCode?: string;
-  pageInfo: {
-    totalResults: number;
-    resultsPerPage: number;
-  };
-  items: YouTubeSearchItem[];
-  error?: {
-    code: number;
-    message: string;
-    errors?: Array<{
-      message: string;
-      domain: string;
-      reason: string;
-    }>
-  };
-}
+// interface YouTubeAPIResponse {
+//   kind: string;
+//   etag: string;
+//   nextPageToken?: string;
+//   prevPageToken?: string;
+//   regionCode?: string;
+//   pageInfo: {
+//     totalResults: number;
+//     resultsPerPage: number;
+//   };
+//   items: YouTubeSearchItem[];
+//   error?: {
+//     code: number;
+//     message: string;
+//     errors?: Array<{
+//       message: string;
+//       domain: string;
+//       reason: string;
+//     }>
+//   };
+// }
 
-function generateAiHint(title?: string): string {
-  if (typeof title !== 'string' || !title.trim()) {
-    return 'meditation video'; // Default hint if title is missing or empty
-  }
-  const words = title.toLowerCase().split(/\s+/).filter(Boolean); // Filter out empty strings from split
-  if (words.length >= 2) {
-    return `${words[0]} ${words[1]}`;
-  } else if (words.length === 1) {
-    return words[0];
-  }
-  return 'meditation video';
-}
+// function generateAiHint(title?: string): string {
+//   if (typeof title !== 'string' || !title.trim()) {
+//     return 'meditation video';
+//   }
+//   const words = title.toLowerCase().split(/\s+/).filter(Boolean);
+//   if (words.length >= 2) {
+//     return `${words[0]} ${words[1]}`;
+//   } else if (words.length === 1) {
+//     return words[0];
+//   }
+//   return 'meditation video';
+// }
 
 
 export async function GET() {
+  console.log('[API Route /api/videos] Received GET request. (TEMPORARY DEBUGGING - returning hardcoded videos)');
+
+  // TEMPORARY DEBUGGING: Return hardcoded videos
+  const dummyVideos: Video[] = [
+    {
+      id: 'dummy1',
+      title: 'Dummy Video 1 - Meditation Journey',
+      description: 'This is a hardcoded dummy video for debugging purposes.',
+      thumbnailUrl: 'https://placehold.co/480x360.png',
+      youtubeVideoId: 'dummy1',
+      thumbnailAiHint: 'debug meditation',
+    },
+    {
+      id: 'dummy2',
+      title: 'Dummy Video 2 - Calm Sounds',
+      description: 'Another hardcoded video to test the API route and page rendering.',
+      thumbnailUrl: 'https://placehold.co/480x360.png',
+      youtubeVideoId: 'dummy2',
+      thumbnailAiHint: 'debug calm',
+    },
+  ];
+  return NextResponse.json(dummyVideos);
+
+  // --- ORIGINAL YOUTUBE API LOGIC COMMENTED OUT FOR DEBUGGING ---
+  /*
   console.log('[API Route /api/videos] Received GET request.');
   let apiKey = process.env.YOUTUBE_API_KEY;
 
   if (apiKey) {
-    // Remove potential quotes and trim whitespace from the API key
     apiKey = apiKey.trim().replace(/^["'](.*)["']$/, '$1');
   }
 
@@ -91,8 +114,10 @@ export async function GET() {
     return NextResponse.json({ message: errorMsg }, { status: 500 });
   }
   
+  const UPLOADS_PLAYLIST_ID = YOUTUBE_CHANNEL_ID.replace(/^UC/, 'UU');
+  
   console.log(`[API Route] Using YouTube API Key (first 5, last 5 chars): ${apiKey.substring(0,5)}...${apiKey.substring(apiKey.length - 5)}`);
-  console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}`);
+  console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}, derived UPLOADS_PLAYLIST_ID: ${UPLOADS_PLAYLIST_ID}`);
 
   // Using search.list to get videos by channelId, ordered by date
   const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${YOUTUBE_CHANNEL_ID}&maxResults=9&order=date&type=video&key=${apiKey}`;
@@ -109,11 +134,10 @@ export async function GET() {
     if (!response.ok) {
       console.error(`[API Route Error] YouTube API request failed. Status: ${response.status} ${response.statusText}. Raw Response Body: ${responseText}`);
       try {
-        const errorData: YouTubeAPIResponse = JSON.parse(responseText); // Attempt to parse error
+        const errorData: YouTubeAPIResponse = JSON.parse(responseText); 
         const errorMessage = errorData?.error?.errors?.[0]?.message || errorData?.error?.message || `YouTube API request failed with status ${response.status}`;
         throw new Error(errorMessage);
       } catch (parseError) {
-        // If parsing fails, use the raw response text for the error or a generic message.
         const detail = responseText.length < 500 ? responseText : `Status ${response.status}`;
         throw new Error(`YouTube API request failed: ${detail}`);
       }
@@ -136,13 +160,13 @@ export async function GET() {
           : "'items' array is empty.";
       
       console.warn(`[API Route Warning] No videos found. Reason: ${reason} This usually indicates an issue with the API key (e.g., not enabled for YouTube Data API v3, restricted, billing issue), an incorrect channel ID, or the channel has no public videos matching the query. Full YouTube API response data:`, JSON.stringify(data, null, 2));
-      return NextResponse.json([]); // Return empty array if no videos found
+      return NextResponse.json([]);
     }
 
     const videos: Video[] = data.items.map((item) => ({
       id: item.id.videoId, 
       title: item.snippet.title,
-      description: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
+      description: item.snippet.description ? (item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : '')) : 'No description available.',
       thumbnailUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || 'https://placehold.co/480x360.png',
       youtubeVideoId: item.id.videoId,
       thumbnailAiHint: generateAiHint(item.snippet.title),
@@ -172,4 +196,6 @@ export async function GET() {
     const errorMessage = error instanceof Error ? error.message : 'Failed to load videos due to an unexpected server error. Check server logs for more details.';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
+  */
+  // --- END OF ORIGINAL YOUTUBE API LOGIC ---
 }
