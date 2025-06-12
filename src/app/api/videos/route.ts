@@ -2,8 +2,8 @@
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-const YOUTUBE_CHANNEL_ID = 'UC0k3x4i0x3YLG5B7p0z2T_w'; // AgoraMeditation Channel ID
-const UPLOADS_PLAYLIST_ID = 'UU0k3x4i0x3YLG5B7p0z2T_w'; // Derived from Channel ID for uploads
+const YOUTUBE_CHANNEL_ID = 'UCsA1nJUPR0P81A6kMmxRAgw'; // Corrected Agora Meditations Channel ID
+const UPLOADS_PLAYLIST_ID = 'UUsA1nJUPR0P81A6kMmxRAgw'; // Derived from Corrected Channel ID for uploads
 
 interface YouTubePlaylistItemSnippet {
   title: string;
@@ -89,3 +89,4 @@ export async function GET() {
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
+
