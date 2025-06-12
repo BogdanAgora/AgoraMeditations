@@ -62,11 +62,14 @@ interface YouTubeAPIResponse {
   };
 }
 
-function generateAiHint(title: string): string {
-  const words = title.toLowerCase().split(/\s+/);
+function generateAiHint(title?: string): string {
+  if (typeof title !== 'string' || !title.trim()) {
+    return 'meditation video'; // Default hint if title is missing or empty
+  }
+  const words = title.toLowerCase().split(/\s+/).filter(Boolean); // Filter out empty strings from split
   if (words.length >= 2) {
     return `${words[0]} ${words[1]}`;
-  } else if (words.length === 1 && words[0]) {
+  } else if (words.length === 1) {
     return words[0];
   }
   return 'meditation video';
@@ -74,6 +77,7 @@ function generateAiHint(title: string): string {
 
 
 export async function GET() {
+  console.log('[API Route /api/videos] Received GET request.');
   let apiKey = process.env.YOUTUBE_API_KEY;
 
   if (apiKey) {
@@ -82,17 +86,9 @@ export async function GET() {
   }
 
   if (!apiKey || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE' || apiKey.trim() === '') {
-    console.error(`
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-[API Route Critical Error] YouTube API key is MISSING or NOT CONFIGURED.
-Please ensure:
-1. You have a .env.local file in the root of your project.
-2. It contains the line: YOUTUBE_API_KEY=your_actual_api_key_here (NO quotes around the key itself)
-3. You have RESTARTED your Next.js development server after creating/modifying .env.local.
-An invalid or missing API key is the most common cause of video fetching issues.
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    `);
-    return NextResponse.json({ message: 'YouTube API key not configured on the server. Please check server logs and .env.local file, then RESTART your server.' }, { status: 500 });
+    const errorMsg = 'YouTube API key is MISSING or NOT CONFIGURED. Please ensure: 1. You have a .env.local file in the root of your project. 2. It contains the line: YOUTUBE_API_KEY=your_actual_api_key_here (NO quotes around the key itself). 3. You have RESTARTED your Next.js development server after creating/modifying .env.local.';
+    console.error(`\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[API Route Critical Error] ${errorMsg}\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n`);
+    return NextResponse.json({ message: errorMsg }, { status: 500 });
   }
   
   console.log(`[API Route] Using YouTube API Key (first 5, last 5 chars): ${apiKey.substring(0,5)}...${apiKey.substring(apiKey.length - 5)}`);
@@ -107,7 +103,7 @@ An invalid or missing API key is the most common cause of video fetching issues.
       next: { revalidate: 3600 } // Revalidate every hour
     });
     
-    const responseText = await response.text();
+    const responseText = await response.text(); // Get raw text first for robust logging
     console.log(`[API Route] YouTube API Response Status: ${response.status} ${response.statusText}`);
     
     if (!response.ok) {
@@ -127,7 +123,7 @@ An invalid or missing API key is the most common cause of video fetching issues.
     const data: YouTubeAPIResponse = JSON.parse(responseText);
 
     if (data.error) {
-      console.error('[API Route Error] YouTube API returned an error object even with a successful HTTP status. Parsed error data:', data.error);
+      console.error('[API Route Error] YouTube API returned an error object even with a successful HTTP status. Parsed error data:', JSON.stringify(data.error, null, 2));
       const detailedError = data.error.errors?.[0]?.message || data.error.message;
       throw new Error(detailedError);
     }
@@ -140,7 +136,7 @@ An invalid or missing API key is the most common cause of video fetching issues.
           : "'items' array is empty.";
       
       console.warn(`[API Route Warning] No videos found. Reason: ${reason} This usually indicates an issue with the API key (e.g., not enabled for YouTube Data API v3, restricted, billing issue), an incorrect channel ID, or the channel has no public videos matching the query. Full YouTube API response data:`, JSON.stringify(data, null, 2));
-      return NextResponse.json([]);
+      return NextResponse.json([]); // Return empty array if no videos found
     }
 
     const videos: Video[] = data.items.map((item) => ({
@@ -154,20 +150,26 @@ An invalid or missing API key is the most common cause of video fetching issues.
 
     console.log(`[API Route] Successfully mapped ${videos.length} videos.`);
     return NextResponse.json(videos);
-  } catch (error) {
+
+  } catch (error: unknown) {
     console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     console.error('[API Route Error] An unexpected error occurred in GET /api/videos:');
-    console.error('Error Name:', error instanceof Error ? error.name : 'UnknownError');
-    console.error('Error Message:', error instanceof Error ? error.message : String(error));
-    if (error instanceof Error && error.stack) {
-      console.error('Error Stack (condensed):', error.stack.substring(0, 1000) + (error.stack.length > 1000 ? '...' : ''));
+    if (error instanceof Error) {
+      console.error('Error Name:', error.name);
+      console.error('Error Message:', error.message);
+      if (error.stack) {
+        console.error('Error Stack (condensed):', error.stack.substring(0, 1000) + (error.stack.length > 1000 ? '...' : ''));
+      }
+    } else {
+      console.error('Unknown Error Type:', typeof error);
+      console.error('Error Object (stringified):', String(error));
     }
     console.error('This could be due to an issue with the YouTube API request (e.g., invalid API key, quota exceeded, network issue) or a problem in the server-side code.');
     console.error('PLEASE CAREFULLY REVIEW THE FULL ERROR DETAILS ABOVE AND ANY PRECEDING YOUTUBE API RESPONSE LOGS.');
     console.error('Verify your YOUTUBE_API_KEY in .env.local, ensure it has YouTube Data API v3 enabled in Google Cloud Console, and check for any restrictions or billing issues.');
     console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    const errorMessage = error instanceof Error ? error.message : 'Failed to load videos due to an unexpected server error. Check server logs.';
+    
+    const errorMessage = error instanceof Error ? error.message : 'Failed to load videos due to an unexpected server error. Check server logs for more details.';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }
-
