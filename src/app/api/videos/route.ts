@@ -2,47 +2,90 @@
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-const videos: Video[] = [
-  {
-    id: '1',
-    title: 'Eternal OM CHANT for Deep Meditation, Positive Energy, Stress Relief and Inner Peace',
-    description: 'Immerse yourself in the sacred sound of the OM chant, a timeless mantra renowned for its profound healing and spiritual benefits. This eternal OM chant is meticulously crafted to guide you into deep meditation, cultivate positive energy, alleviate stress, and foster inner peace.',
-    thumbnailUrl: 'https://i.ytimg.com/vi/CtlQRv_Xmb0/hqdefault.jpg',
-    youtubeVideoId: 'CtlQRv_Xmb0',
-    thumbnailAiHint: 'om chant meditation',
-  },
-  {
-    id: '2',
-    title: 'Ocean Whisper 🌊 Beautiful Calming Piano Music & Sea Waves 🌅 Fall asleep, Deep Sleep, Meditation',
-    description: 'Let the soothing sounds of ocean waves and calming piano melodies wash over you. This beautiful music is perfect for falling asleep, deep sleep, meditation, and stress relief.',
-    thumbnailUrl: 'https://i.ytimg.com/vi/_5oJYqRZxA8/hqdefault.jpg',
-    youtubeVideoId: '_5oJYqRZxA8',
-    thumbnailAiHint: 'ocean piano waves',
-  },
-  {
-    id: '3',
-    title: 'The Path of Surrender ✨Sufi Ney Flute Music for Peace ✨ Mystical Night Prayers & Meditation',
-    description: 'Experience the profound peace of surrender with the mystical sounds of the Sufi Ney flute. This music is ideal for night prayers, meditation, and finding solace.',
-    thumbnailUrl: 'https://i.ytimg.com/vi/Y7n8T0LDXRI/hqdefault.jpg',
-    youtubeVideoId: 'Y7n8T0LDXRI',
-    thumbnailAiHint: 'sufi flute peace',
-  },
-  {
-    id: '4',
-    title: 'Peaceflow ✨ Relaxing Piano Music for Peaceful Moments 🌄 Sleep, Fall Asleep, Meditation',
-    description: 'Find your peaceflow with this collection of relaxing piano music. Designed for peaceful moments, this selection will help you sleep, fall asleep faster, and enhance your meditation practice.',
-    thumbnailUrl: 'https://i.ytimg.com/vi/h6A-ShLgDBM/hqdefault.jpg',
-    youtubeVideoId: 'h6A-ShLgDBM',
-    thumbnailAiHint: 'relaxing piano peaceful',
-  },
-];
+const YOUTUBE_CHANNEL_ID = 'UC0k3x4i0x3YLG5B7p0z2T_w'; // AgoraMeditation Channel ID
+const UPLOADS_PLAYLIST_ID = 'UU0k3x4i0x3YLG5B7p0z2T_w'; // Derived from Channel ID for uploads
 
-export async function GET() {
-  try {
-    return NextResponse.json(videos);
-  } catch (error) {
-    console.error('Failed to fetch videos:', error);
-    return NextResponse.json({ message: 'Failed to load videos' }, { status: 500 });
-  }
+interface YouTubePlaylistItemSnippet {
+  title: string;
+  description: string;
+  thumbnails: {
+    default?: { url: string; width: number; height: number };
+    medium?: { url: string; width: number; height: number };
+    high?: { url: string; width: number; height: number };
+    standard?: { url: string; width: number; height: number };
+    maxres?: { url: string; width: number; height: number };
+  };
+  resourceId: {
+    kind: string;
+    videoId: string;
+  };
+  publishedAt: string;
 }
 
+interface YouTubePlaylistItem {
+  id: string; // Playlist Item ID, not Video ID
+  snippet: YouTubePlaylistItemSnippet;
+}
+
+interface YouTubeAPIResponse {
+  items: YouTubePlaylistItem[];
+  error?: {
+    message: string;
+  };
+}
+
+function generateAiHint(title: string): string {
+  return title.toLowerCase().split(' ').slice(0, 2).join(' ') || 'meditation video';
+}
+
+export async function GET() {
+  const apiKey = process.env.YOUTUBE_API_KEY;
+
+  if (!apiKey || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE') {
+    console.error('YouTube API key is missing or not configured. Please set YOUTUBE_API_KEY in your .env.local file.');
+    // Return an empty list or a predefined placeholder list if the API key is missing
+    // For now, returning an error to make it clear.
+    return NextResponse.json({ message: 'YouTube API key not configured on the server.' }, { status: 500 });
+  }
+
+  const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=9&key=${apiKey}&order=date`;
+
+  try {
+    const response = await fetch(YOUTUBE_API_URL, {
+      next: { revalidate: 3600 } // Revalidate every hour
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Failed to fetch videos from YouTube API:', errorData);
+      throw new Error(errorData?.error?.message || `YouTube API request failed with status ${response.status}`);
+    }
+
+    const data: YouTubeAPIResponse = await response.json();
+
+    if (data.error) {
+      console.error('YouTube API returned an error:', data.error.message);
+      throw new Error(data.error.message);
+    }
+    
+    if (!data.items) {
+      console.warn('No video items returned from YouTube API.');
+      return NextResponse.json([]);
+    }
+
+    const videos: Video[] = data.items.map((item) => ({
+      id: item.snippet.resourceId.videoId, // Use videoId as the primary ID
+      title: item.snippet.title,
+      description: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''), // Truncate description
+      thumbnailUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || 'https://placehold.co/480x360.png',
+      youtubeVideoId: item.snippet.resourceId.videoId,
+      thumbnailAiHint: generateAiHint(item.snippet.title),
+    }));
+
+    return NextResponse.json(videos);
+  } catch (error) {
+    console.error('Error in GET /api/videos:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to load videos due to an unexpected error';
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
+  }
+}
