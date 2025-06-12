@@ -2,111 +2,83 @@
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-// const YOUTUBE_CHANNEL_ID = 'UCsA1nJUPR0P81A6kMmxRAgw'; // Original Channel ID
+// This is the Channel ID for @AgoraMeditations
+const YOUTUBE_CHANNEL_ID = 'UCsA1nJUPR0P81A6kMmxRAgw';
 
-// interface YouTubeThumbnail {
-//   url: string;
-//   width: number;
-//   height: number;
-// }
+interface YouTubeThumbnail {
+  url: string;
+  width: number;
+  height: number;
+}
 
-// interface YouTubeSnippet {
-//   publishedAt: string;
-//   channelId: string;
-//   title: string;
-//   description:string;
-//   thumbnails: {
-//     default?: YouTubeThumbnail;
-//     medium?: YouTubeThumbnail;
-//     high?: YouTubeThumbnail;
-//     standard?: YouTubeThumbnail;
-//     maxres?: YouTubeThumbnail;
-//   };
-//   channelTitle: string;
-//   liveBroadcastContent: string;
-//   publishTime: string;
-// }
+interface YouTubeSnippet {
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  description:string;
+  thumbnails: {
+    default?: YouTubeThumbnail;
+    medium?: YouTubeThumbnail;
+    high?: YouTubeThumbnail;
+    standard?: YouTubeThumbnail;
+    maxres?: YouTubeThumbnail;
+  };
+  channelTitle: string;
+  liveBroadcastContent: string;
+  publishTime: string;
+}
 
-// interface YouTubeSearchItemId {
-//   kind: string;
-//   videoId: string;
-// }
+interface YouTubeSearchItemId {
+  kind: string;
+  videoId: string;
+}
 
-// interface YouTubeSearchItem {
-//   kind: string;
-//   etag: string;
-//   id: YouTubeSearchItemId;
-//   snippet: YouTubeSnippet;
-// }
+interface YouTubeSearchItem {
+  kind: string;
+  etag: string;
+  id: YouTubeSearchItemId;
+  snippet: YouTubeSnippet;
+}
 
-// interface YouTubeAPIResponse {
-//   kind: string;
-//   etag: string;
-//   nextPageToken?: string;
-//   prevPageToken?: string;
-//   regionCode?: string;
-//   pageInfo: {
-//     totalResults: number;
-//     resultsPerPage: number;
-//   };
-//   items: YouTubeSearchItem[];
-//   error?: {
-//     code: number;
-//     message: string;
-//     errors?: Array<{
-//       message: string;
-//       domain: string;
-//       reason: string;
-//     }>
-//   };
-// }
+interface YouTubeAPIResponse {
+  kind: string;
+  etag: string;
+  nextPageToken?: string;
+  prevPageToken?: string;
+  regionCode?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  };
+  items: YouTubeSearchItem[];
+  error?: {
+    code: number;
+    message: string;
+    errors?: Array<{
+      message: string;
+      domain: string;
+      reason: string;
+    }>
+  };
+}
 
-// function generateAiHint(title?: string): string {
-//   if (typeof title !== 'string' || !title.trim()) {
-//     return 'meditation video';
-//   }
-//   const words = title.toLowerCase().split(/\s+/).filter(Boolean);
-//   if (words.length >= 2) {
-//     return `${words[0]} ${words[1]}`;
-//   } else if (words.length === 1) {
-//     return words[0];
-//   }
-//   return 'meditation video';
-// }
+function generateAiHint(title?: string): string {
+  if (typeof title !== 'string' || !title.trim()) {
+    return 'meditation video'; // Default hint
+  }
+  const words = title.toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    return `${words[0]} ${words[1]}`;
+  } else if (words.length === 1) {
+    return words[0];
+  }
+  return 'meditation video'; // Fallback if title is very short or unusual
+}
 
 
 export async function GET() {
-  console.log('[API Route /api/videos] Received GET request. (TEMPORARY DEBUGGING - returning hardcoded videos)');
-
-  // TEMPORARY DEBUGGING: Return hardcoded videos
-  const dummyVideos: Video[] = [
-    {
-      id: 'dummy1',
-      title: 'Dummy Video 1 - Meditation Journey',
-      description: 'This is a hardcoded dummy video for debugging purposes.',
-      thumbnailUrl: 'https://placehold.co/480x360.png',
-      youtubeVideoId: 'dummy1',
-      thumbnailAiHint: 'debug meditation',
-    },
-    {
-      id: 'dummy2',
-      title: 'Dummy Video 2 - Calm Sounds',
-      description: 'Another hardcoded video to test the API route and page rendering.',
-      thumbnailUrl: 'https://placehold.co/480x360.png',
-      youtubeVideoId: 'dummy2',
-      thumbnailAiHint: 'debug calm',
-    },
-  ];
-  return NextResponse.json(dummyVideos);
-
-  // --- ORIGINAL YOUTUBE API LOGIC COMMENTED OUT FOR DEBUGGING ---
-  /*
   console.log('[API Route /api/videos] Received GET request.');
   let apiKey = process.env.YOUTUBE_API_KEY;
-
-  if (apiKey) {
-    apiKey = apiKey.trim().replace(/^["'](.*)["']$/, '$1');
-  }
 
   if (!apiKey || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE' || apiKey.trim() === '') {
     const errorMsg = 'YouTube API key is MISSING or NOT CONFIGURED. Please ensure: 1. You have a .env.local file in the root of your project. 2. It contains the line: YOUTUBE_API_KEY=your_actual_api_key_here (NO quotes around the key itself). 3. You have RESTARTED your Next.js development server after creating/modifying .env.local.';
@@ -114,10 +86,10 @@ export async function GET() {
     return NextResponse.json({ message: errorMsg }, { status: 500 });
   }
   
-  const UPLOADS_PLAYLIST_ID = YOUTUBE_CHANNEL_ID.replace(/^UC/, 'UU');
+  apiKey = apiKey.trim().replace(/^["'](.*)["']$/, '$1');
   
   console.log(`[API Route] Using YouTube API Key (first 5, last 5 chars): ${apiKey.substring(0,5)}...${apiKey.substring(apiKey.length - 5)}`);
-  console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}, derived UPLOADS_PLAYLIST_ID: ${UPLOADS_PLAYLIST_ID}`);
+  console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}`);
 
   // Using search.list to get videos by channelId, ordered by date
   const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${YOUTUBE_CHANNEL_ID}&maxResults=9&order=date&type=video&key=${apiKey}`;
@@ -165,7 +137,7 @@ export async function GET() {
 
     const videos: Video[] = data.items.map((item) => ({
       id: item.id.videoId, 
-      title: item.snippet.title,
+      title: item.snippet.title || 'Untitled Video',
       description: item.snippet.description ? (item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : '')) : 'No description available.',
       thumbnailUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || 'https://placehold.co/480x360.png',
       youtubeVideoId: item.id.videoId,
@@ -196,6 +168,4 @@ export async function GET() {
     const errorMessage = error instanceof Error ? error.message : 'Failed to load videos due to an unexpected server error. Check server logs for more details.';
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
-  */
-  // --- END OF ORIGINAL YOUTUBE API LOGIC ---
 }
