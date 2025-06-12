@@ -14,7 +14,7 @@ interface YouTubeSnippet {
   publishedAt: string;
   channelId: string;
   title: string;
-  description: string;
+  description:string;
   thumbnails: {
     default?: YouTubeThumbnail;
     medium?: YouTubeThumbnail;
@@ -27,13 +27,14 @@ interface YouTubeSnippet {
   publishTime: string;
 }
 
+// For search results, the 'id' is an object.
 interface YouTubeSearchItemId {
-  kind: string;
+  kind: string; // e.g., "youtube#video"
   videoId: string;
 }
 
 interface YouTubeSearchItem {
-  kind: string;
+  kind: string; // e.g., "youtube#searchResult"
   etag: string;
   id: YouTubeSearchItemId;
   snippet: YouTubeSnippet;
@@ -80,13 +81,22 @@ export async function GET() {
   }
 
   if (!apiKey || apiKey === 'YOUR_YOUTUBE_API_KEY_HERE' || apiKey.trim() === '') {
-    console.error('[API Route Error] YouTube API key is missing or not configured. Please set YOUTUBE_API_KEY in your .env.local file.');
-    return NextResponse.json({ message: 'YouTube API key not configured on the server.' }, { status: 500 });
+    console.error(`
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[API Route Critical Error] YouTube API key is MISSING or NOT CONFIGURED.
+Please ensure:
+1. You have a .env.local file in the root of your project.
+2. It contains the line: YOUTUBE_API_KEY=your_actual_api_key_here
+3. You have restarted your Next.js development server after creating/modifying .env.local.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    `);
+    return NextResponse.json({ message: 'YouTube API key not configured on the server. Please check server logs for details.' }, { status: 500 });
   }
   
   console.log(`[API Route] Using YouTube API Key (first 5, last 5 chars): ${apiKey.substring(0,5)}...${apiKey.substring(apiKey.length - 5)}`);
   console.log(`[API Route] Attempting to fetch videos for CHANNEL_ID: ${YOUTUBE_CHANNEL_ID}`);
 
+  // Using search.list to get videos by channelId, ordered by date
   const YOUTUBE_API_URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${YOUTUBE_CHANNEL_ID}&maxResults=9&order=date&type=video&key=${apiKey}`;
   console.log('[API Route] Requesting YouTube API URL:', YOUTUBE_API_URL);
 
@@ -101,10 +111,11 @@ export async function GET() {
     if (!response.ok) {
       console.error(`[API Route Error] YouTube API request failed. Status: ${response.status} ${response.statusText}. Raw Response Body: ${responseText}`);
       try {
-        const errorData: YouTubeAPIResponse = JSON.parse(responseText);
+        const errorData: YouTubeAPIResponse = JSON.parse(responseText); // Attempt to parse error
         const errorMessage = errorData?.error?.errors?.[0]?.message || errorData?.error?.message || `YouTube API request failed with status ${response.status}`;
         throw new Error(errorMessage);
       } catch (parseError) {
+        // If parsing fails, use the raw response text for the error or a generic message.
         const detail = responseText.length < 500 ? responseText : `Status ${response.status}`;
         throw new Error(`YouTube API request failed: ${detail}`);
       }
@@ -119,18 +130,19 @@ export async function GET() {
       throw new Error(detailedError);
     }
     
-    if (!data.items) {
-      console.warn('[API Route Warning] No data.items field in YouTube API response. This means no videos were found or the response structure is unexpected. Full response data:', data);
-      return NextResponse.json([]);
-    }
-    
-    if (data.items.length === 0) {
-      console.warn('[API Route Warning] data.items array from YouTube API is empty. This means no videos matched the query (e.g., channel has no videos or API key issue). Full response data:', data);
+    if (!data.items || data.items.length === 0) {
+      const reason = !data.items 
+        ? "No 'items' field in response." 
+        : (data.pageInfo && typeof data.pageInfo.totalResults === 'number' && data.pageInfo.totalResults === 0) 
+          ? "'items' array is empty and 'pageInfo.totalResults' is 0."
+          : "'items' array is empty.";
+      
+      console.warn(`[API Route Warning] No videos found. Reason: ${reason} This usually indicates an issue with the API key, channel ID, or the channel has no public videos matching the query. Full YouTube API response data:`, JSON.stringify(data, null, 2));
       return NextResponse.json([]);
     }
 
     const videos: Video[] = data.items.map((item) => ({
-      id: item.id.videoId, 
+      id: item.id.videoId, // For search results, videoId is in item.id.videoId
       title: item.snippet.title,
       description: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
       thumbnailUrl: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || 'https://placehold.co/480x360.png',
