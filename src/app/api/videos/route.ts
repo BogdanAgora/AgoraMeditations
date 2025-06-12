@@ -1,38 +1,39 @@
+
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
 const videos: Video[] = [
   {
     id: '1',
-    title: 'Miracle Healing Frequencies | Sound Bath Meditation for Deep Sleep and Stress Relief | Solfeggio 528Hz',
-    description: 'Experience the profound healing power of miracle frequencies with this sound bath meditation. Designed for deep sleep and stress relief, this session features the Solfeggio 528Hz frequency, known for its ability to repair DNA, promote transformation, and bring miracles.',
-    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual thumbnail
-    youtubeVideoId: '_5oJYqRZxA8',
-    thumbnailAiHint: 'sound bath healing',
+    title: 'Mystical Prayer in the Desert ✨ Sufi Ney Flute Meditation ✨ Timeless Tranquility & Inner Peace',
+    description: 'Embark on a mystical journey with the enchanting sounds of the Sufi Ney flute. This meditation music is designed to evoke timeless tranquility and deep inner peace.',
+    thumbnailUrl: 'https://i.ytimg.com/vi/f_a7yX9xPbk/hqdefault.jpg',
+    youtubeVideoId: 'f_a7yX9xPbk',
+    thumbnailAiHint: 'sufi ney flute',
   },
   {
     id: '2',
-    title: 'Duduk Relaxing Music - Meditation, Sleep, Stress Relief Music - Armenian Soul',
-    description: 'Immerse yourself in the soulful melodies of the Duduk with this relaxing music compilation. Perfect for meditation, deep sleep, and stress relief, these ancient Armenian tunes will transport you to a state of tranquility and peace.',
-    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual thumbnail
-    youtubeVideoId: 'Y7n8T0LDXRI',
-    thumbnailAiHint: 'duduk music relaxation',
+    title: 'Ocean Whisper 🌊 Beautiful Calming Piano Music & Sea Waves 🌅 Fall asleep, Deep Sleep, Meditation',
+    description: 'Let the soothing sounds of ocean waves and calming piano melodies wash over you. This beautiful music is perfect for falling asleep, deep sleep, meditation, and stress relief.',
+    thumbnailUrl: 'https://i.ytimg.com/vi/_5oJYqRZxA8/hqdefault.jpg',
+    youtubeVideoId: '_5oJYqRZxA8',
+    thumbnailAiHint: 'ocean piano music',
   },
   {
     id: '3',
-    title: 'Emotional Piano Music for Stress Relief & Deep Sleep | Beautiful Relaxing Music for Meditation & Study',
-    description: 'Immerse yourself in this beautiful and emotional piano music, perfect for stress relief, deep sleep, meditation, and study. Let the soothing melodies wash over you, calming your mind and uplifting your spirit.',
-    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual thumbnail
-    youtubeVideoId: 'h6A-ShLgDBM',
-    thumbnailAiHint: 'piano emotional music',
+    title: 'The Path of Surrender ✨Sufi Ney Flute Music for Peace ✨ Mystical Night Prayers & Meditation',
+    description: 'Experience the profound peace of surrender with the mystical sounds of the Sufi Ney flute. This music is ideal for night prayers, meditation, and finding solace.',
+    thumbnailUrl: 'https://i.ytimg.com/vi/Y7n8T0LDXRI/hqdefault.jpg',
+    youtubeVideoId: 'Y7n8T0LDXRI',
+    thumbnailAiHint: 'sufi meditation peace',
   },
   {
     id: '4',
-    title: 'Tibetan Singing Bowls Music For Meditation, Healing, Relaxation, Stress Relief | Agora Meditation',
-    description: 'Experience the healing power of Tibetan singing bowls. Ideal for meditation, relaxation, and stress relief. From Agora Meditation.',
-    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual thumbnail
-    youtubeVideoId: 'Q2pS-F3jS3E',
-    thumbnailAiHint: 'singing bowls healing',
+    title: 'Peaceflow ✨ Relaxing Piano Music for Peaceful Moments 🌄 Sleep, Fall Asleep, Meditation',
+    description: 'Find your peaceflow with this collection of relaxing piano music. Designed for peaceful moments, this selection will help you sleep, fall asleep faster, and enhance your meditation practice.',
+    thumbnailUrl: 'https://i.ytimg.com/vi/h6A-ShLgDBM/hqdefault.jpg',
+    youtubeVideoId: 'h6A-ShLgDBM',
+    thumbnailAiHint: 'relaxing piano meditation',
   },
 ];
 
