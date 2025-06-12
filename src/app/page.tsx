@@ -101,7 +101,7 @@ export default function Home() {
           </Card>
           <Card className="shadow-lg hover:shadow-xl smooth-transition">
             <CardHeader>
-              <Image src="https://placehold.co/48x48.png" alt="Duduk Playlist Icon" data-ai-hint="duduk music" width={40} height={40} className="mb-2 rounded-sm" />
+              <Image src="https://placehold.co/48x48.png" alt="Duduk Playlist Icon" data-ai-hint="duduk instrument" width={40} height={40} className="mb-2 rounded-sm" />
               <CardTitle className="font-headline">Duduk Harmonies</CardTitle>
             </CardHeader>
             <CardContent>

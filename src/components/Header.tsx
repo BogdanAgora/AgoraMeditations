@@ -9,7 +9,7 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 smooth-transition">
           <Image 
-            src="/logo.png" 
+            src="/Agora_logo_bkg_negru.png" 
             alt="AgoraMeditation Logo" 
             width={32} 
             height={32} 

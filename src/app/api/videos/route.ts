@@ -1,41 +1,43 @@
 import type { Video } from '@/lib/types';
 import { NextResponse } from 'next/server';
 
-// Placeholder video data. In a real application, this might come from a database or external API.
 const videos: Video[] = [
   {
     id: '1',
-    title: '10 Minute Guided Morning Meditation',
-    description: 'Start your day with peace and clarity. This 10-minute guided meditation will help you set a positive intention for the day ahead.',
-    thumbnailUrl: 'https://placehold.co/640x360.png',
-    youtubeVideoId: 'VIDEO_ID_1', 
+    title: 'Instrumental Relaxing Music For Stress Relief, Sleep, Meditation, Spa, Study | Agora Meditation',
+    description: 'Relaxing instrumental music to help you de-stress, sleep better, meditate deeply, enjoy a spa-like experience, or focus on your studies. Brought to you by Agora Meditation.',
+    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual: https://i.ytimg.com/vi/Z_PEWX6FPV8/hqdefault.jpg
+    youtubeVideoId: 'Z_PEWX6FPV8',
+    thumbnailAiHint: 'instrumental music relaxation',
   },
   {
     id: '2',
-    title: 'Relaxing Nature Sounds for Sleep & Stress Relief',
-    description: 'Immerse yourself in the calming sounds of nature. Perfect for falling asleep, reducing stress, or finding focus during work or study.',
-    thumbnailUrl: 'https://placehold.co/640x360.png',
-    youtubeVideoId: 'VIDEO_ID_2', 
+    title: 'Muzica De Relaxare Cu Sunete Din Natura Pentru Somn Linistititor Si Reducerea Stresului',
+    description: 'Soothing relaxing music with nature sounds for restful sleep and stress reduction. Ideal for unwinding and finding peace.',
+    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual: https://i.ytimg.com/vi/xV72M7r7xWw/hqdefault.jpg
+    youtubeVideoId: 'xV72M7r7xWw',
+    thumbnailAiHint: 'nature sounds sleep',
   },
   {
     id: '3',
-    title: 'Mindfulness Meditation for Beginners',
-    description: 'New to meditation? This guided session will introduce you to the basics of mindfulness and help you cultivate present moment awareness.',
-    thumbnailUrl: 'https://placehold.co/640x360.png',
-    youtubeVideoId: 'VIDEO_ID_3', 
+    title: 'Relaxing Music With Ocean Sounds For Deep Sleep, Stress Relief, Meditation | Agora Meditation',
+    description: 'Calming music combined with ocean sounds, perfect for deep sleep, stress relief, and meditation. By Agora Meditation.',
+    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual: https://i.ytimg.com/vi/oAHT0CFuY3g/hqdefault.jpg
+    youtubeVideoId: 'oAHT0CFuY3g',
+    thumbnailAiHint: 'ocean waves meditation',
   },
   {
     id: '4',
-    title: 'Calming Ambient Music for Deep Relaxation',
-    description: 'Unwind with this soothing ambient music, designed to promote deep relaxation and tranquility. Ideal for meditation, yoga, or simply unwinding.',
-    thumbnailUrl: 'https://placehold.co/640x360.png',
-    youtubeVideoId: 'VIDEO_ID_4', 
+    title: 'Tibetan Singing Bowls Music For Meditation, Healing, Relaxation, Stress Relief | Agora Meditation',
+    description: 'Experience the healing power of Tibetan singing bowls. Ideal for meditation, relaxation, and stress relief. From Agora Meditation.',
+    thumbnailUrl: 'https://placehold.co/640x360.png', // Replace with actual: https://i.ytimg.com/vi/Q2pS-F3jS3E/hqdefault.jpg
+    youtubeVideoId: 'Q2pS-F3jS3E',
+    thumbnailAiHint: 'singing bowls healing',
   },
 ];
 
 export async function GET() {
   try {
-    // In a real app, you might fetch this data from a database or external service
     return NextResponse.json(videos);
   } catch (error) {
     console.error('Failed to fetch videos:', error);

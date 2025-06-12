@@ -17,7 +17,7 @@ export default function VideoCard({ video }: VideoCardProps) {
             alt={video.title} 
             layout="fill"
             objectFit="cover"
-            data-ai-hint="youtube thumbnail"
+            data-ai-hint={video.thumbnailAiHint || "youtube thumbnail"}
           />
         </div>
       </CardHeader>
