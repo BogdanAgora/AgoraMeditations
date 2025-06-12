@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Youtube, BookOpen, Wind, Sunrise, Leaf } from 'lucide-react';
+import { Youtube, BookOpen, Sunrise, Music, ListMusic } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -87,34 +87,34 @@ export default function Home() {
 
       <section className="py-12">
         <h2 className="text-3xl font-headline font-semibold text-center text-foreground mb-8">
-          Begin Your Journey to Inner Peace
+          Explore Our Playlists
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           <Card className="shadow-lg hover:shadow-xl smooth-transition">
             <CardHeader>
-              <Wind className="h-10 w-10 text-accent mb-2" />
-              <CardTitle className="font-headline">Mindful Breathing</CardTitle>
+              <Music className="h-10 w-10 text-accent mb-2" />
+              <CardTitle className="font-headline">Piano Melodies</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Learn simple breathing techniques to anchor yourself in the present moment.</CardDescription>
+              <CardDescription>Calming piano pieces for relaxation, focus, and peaceful moments.</CardDescription>
             </CardContent>
           </Card>
           <Card className="shadow-lg hover:shadow-xl smooth-transition">
             <CardHeader>
-              <Image src="https://placehold.co/48x48.png" alt="Guided Meditation Icon" data-ai-hint="meditation icon" width={40} height={40} className="mb-2 rounded-sm" />
-              <CardTitle className="font-headline">Guided Meditations</CardTitle>
+              <Image src="https://placehold.co/48x48.png" alt="Duduk Playlist Icon" data-ai-hint="duduk music" width={40} height={40} className="mb-2 rounded-sm" />
+              <CardTitle className="font-headline">Duduk Harmonies</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Follow along with guided sessions to deepen your meditation practice.</CardDescription>
+              <CardDescription>Soulful and ancient duduk tunes for deep meditation and introspection.</CardDescription>
             </CardContent>
           </Card>
           <Card className="shadow-lg hover:shadow-xl smooth-transition">
             <CardHeader>
-              <Leaf className="h-10 w-10 text-accent mb-2" />
-              <CardTitle className="font-headline">Nature's Serenity</CardTitle>
+              <ListMusic className="h-10 w-10 text-accent mb-2" />
+              <CardTitle className="font-headline">Sufi Rhythms</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Connect with the calming power of nature through our video selections.</CardDescription>
+              <CardDescription>Mystical and uplifting Sufi music to elevate your spirit and connect.</CardDescription>
             </CardContent>
           </Card>
         </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Leaf, Youtube, BookOpen } from 'lucide-react';
+import Image from 'next/image';
+import { Youtube, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
@@ -7,7 +8,14 @@ export default function Header() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2 smooth-transition">
-          <Leaf className="h-8 w-8 text-primary" />
+          <Image 
+            src="/logo.png" 
+            alt="AgoraMeditation Logo" 
+            width={32} 
+            height={32} 
+            className="h-8 w-8"
+            data-ai-hint="logo" 
+          />
           <h1 className="text-2xl font-headline font-bold text-foreground">
             AgoraMeditation
           </h1>

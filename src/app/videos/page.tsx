@@ -1,40 +1,26 @@
 import type { Video } from '@/lib/types';
 import VideoCard from '@/components/VideoCard';
-import { Youtube } from 'lucide-react';
+import { Youtube, AlertTriangle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Placeholder video data. Replace with actual data fetching logic.
-const videos: Video[] = [
-  {
-    id: '1',
-    title: '10 Minute Guided Morning Meditation',
-    description: 'Start your day with peace and clarity. This 10-minute guided meditation will help you set a positive intention for the day ahead.',
-    thumbnailUrl: 'https://placehold.co/640x360.png?text=Morning+Meditation',
-    youtubeVideoId: 'VIDEO_ID_1', // Replace with actual YouTube Video ID
-  },
-  {
-    id: '2',
-    title: 'Relaxing Nature Sounds for Sleep & Stress Relief',
-    description: 'Immerse yourself in the calming sounds of nature. Perfect for falling asleep, reducing stress, or finding focus during work or study.',
-    thumbnailUrl: 'https://placehold.co/640x360.png?text=Nature+Sounds',
-    youtubeVideoId: 'VIDEO_ID_2', // Replace with actual YouTube Video ID
-  },
-  {
-    id: '3',
-    title: 'Mindfulness Meditation for Beginners',
-    description: 'New to meditation? This guided session will introduce you to the basics of mindfulness and help you cultivate present moment awareness.',
-    thumbnailUrl: 'https://placehold.co/640x360.png?text=Beginner+Meditation',
-    youtubeVideoId: 'VIDEO_ID_3', // Replace with actual YouTube Video ID
-  },
-  {
-    id: '4',
-    title: 'Calming Ambient Music for Deep Relaxation',
-    description: 'Unwind with this soothing ambient music, designed to promote deep relaxation and tranquility. Ideal for meditation, yoga, or simply unwinding.',
-    thumbnailUrl: 'https://placehold.co/640x360.png?text=Ambient+Music',
-    youtubeVideoId: 'VIDEO_ID_4', // Replace with actual YouTube Video ID
-  },
-];
+async function getVideos(): Promise<Video[] | null> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002'}/api/videos`, {
+      cache: 'no-store', // Or configure revalidation as needed
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch videos: ${res.statusText}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
-export default function VideosPage() {
+export default async function VideosPage() {
+  const videos = await getVideos();
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -45,7 +31,19 @@ export default function VideosPage() {
         </p>
       </div>
 
-      {videos.length > 0 ? (
+      {!videos ? (
+        <Card className="border-destructive bg-destructive/10">
+          <CardHeader>
+            <CardTitle className="flex items-center text-destructive">
+              <AlertTriangle className="mr-2 h-5 w-5" />
+              Error Loading Videos
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-destructive">We couldn't load the videos at this time. Please try again later.</p>
+          </CardContent>
+        </Card>
+      ) : videos.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {videos.map((video) => (
             <VideoCard key={video.id} video={video} />
