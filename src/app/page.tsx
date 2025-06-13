@@ -9,9 +9,47 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Youtube, BookOpen, Sunrise, Music, ListMusic } from "lucide-react";
+import { Youtube, BookOpen, Sunrise } from "lucide-react";
+import { PiPianoKeysFill } from "react-icons/pi";
+import { GiFlute } from "react-icons/gi";
+import { FaPrayingHands } from "react-icons/fa";
 
-export default function Home() {
+async function getLatestVideos() {
+  try {
+    const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+    const CHANNEL_ID = "UCcCeTkWFuG5nCDhY6wMJiGw";
+
+    if (!YOUTUBE_API_KEY) {
+      throw new Error("YouTube API key is not configured");
+    }
+
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=2&type=video`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`YouTube API responded with status ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data.items.map((item: any) => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail:
+        item.snippet.thumbnails.maxres?.url ||
+        item.snippet.thumbnails.high?.url ||
+        item.snippet.thumbnails.medium?.url,
+      description: item.snippet.description,
+      publishedAt: item.snippet.publishedAt,
+    }));
+  } catch (error) {
+    console.error("Error fetching YouTube videos:", error);
+    return [];
+  }
+}
+
+export default async function Home() {
   return (
     <div className="space-y-12">
       <section className="text-center py-12 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg shadow-lg">
@@ -51,107 +89,114 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h2 className="text-3xl font-headline font-semibold text-foreground mb-4">
-            Find Your Calm
-          </h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            Our curated collection of YouTube videos offers serene landscapes,
-            calming music, and guided meditation sessions to help you relax,
-            de-stress, and find focus.
-          </p>
-          <Button asChild className="smooth-transition">
-            <Link href="/videos">Start Watching</Link>
-          </Button>
-        </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
-          <Image
-            src="https://dummyimage.com/600x400/e0e0e0/ffffff&text=Calm+Scenery"
-            alt="Calm scenery"
-            data-ai-hint="calm scenery"
-            width={600}
-            height={400}
-            className="w-full h-auto object-cover"
-          />
-        </div>
-      </section>
+      {await getLatestVideos().then((videos) => (
+        <>
+          <section className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-3xl font-headline font-semibold text-foreground mb-4">
+                Find Your Calm
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                Our curated collection of YouTube videos offers serene
+                landscapes, calming music, and guided meditation sessions to
+                help you relax, de-stress, and find focus.
+              </p>
+              <Button asChild className="smooth-transition">
+                <Link href="/videos">Start Watching</Link>
+              </Button>
+            </div>
+            <div className="rounded-lg overflow-hidden shadow-xl">
+              {videos[0] && (
+                <Image
+                  src={videos[0].thumbnail}
+                  alt={videos[0].title}
+                  data-ai-hint="duduk meditation"
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                />
+              )}
+            </div>
+          </section>
 
-      <section className="grid md:grid-cols-2 gap-8 items-center">
-        <div className="rounded-lg overflow-hidden shadow-xl md:order-last">
-          <Image
-            src="https://dummyimage.com/600x400/e0e0e0/ffffff&text=Person+Meditating"
-            alt="Person meditating"
-            data-ai-hint="person meditating"
-            width={600}
-            height={400}
-            className="w-full h-auto object-cover"
-          />
-        </div>
-        <div>
-          <h2 className="text-3xl font-headline font-semibold text-foreground mb-4">
-            Nourish Your Mind
-          </h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            Our AgoraMeditations blog features articles on mindfulness
-            practices, meditation benefits, and tips for integrating tranquility
-            into your daily life. Content is crafted with care, supported by AI
-            insights.
-          </p>
-          <Button asChild className="smooth-transition">
-            <Link href="/blog">Explore Articles</Link>
-          </Button>
-        </div>
-      </section>
+          <section className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="rounded-lg overflow-hidden shadow-xl md:order-last">
+              {videos[1] && (
+                <Image
+                  src={videos[1].thumbnail}
+                  alt={videos[1].title}
+                  data-ai-hint="deep meditation music"
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                />
+              )}
+            </div>
+            <div>
+              <h2 className="text-3xl font-headline font-semibold text-foreground mb-4">
+                Nourish Your Mind
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                Our AgoraMeditations blog features articles on mindfulness
+                practices, meditation benefits, and tips for integrating
+                tranquility into your daily life. Content is crafted with care,
+                supported by AI insights.
+              </p>
+              <Button asChild className="smooth-transition">
+                <Link href="/blog">Explore Articles</Link>
+              </Button>
+            </div>
+          </section>
+        </>
+      ))}
 
       <section className="py-12">
         <h2 className="text-3xl font-headline font-semibold text-center text-foreground mb-8">
           Explore Our Playlists
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="shadow-lg hover:shadow-xl smooth-transition">
-            <CardHeader>
-              <Music className="h-10 w-10 text-accent mb-2" />
-              <CardTitle className="font-headline">Piano Melodies</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Calming piano pieces for relaxation, focus, and peaceful
-                moments.
-              </CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="shadow-lg hover:shadow-xl smooth-transition">
-            <CardHeader>
-              <Image
-                src="https://dummyimage.com/48x48/e0e0e0/ffffff&text=🎵"
-                alt="Duduk Playlist Icon"
-                data-ai-hint="duduk instrument"
-                width={40}
-                height={40}
-                className="mb-2 rounded-sm"
-              />
-              <CardTitle className="font-headline">Duduk Harmonies</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Soulful and ancient duduk tunes for deep meditation and
-                introspection.
-              </CardDescription>
-            </CardContent>
-          </Card>
-          <Card className="shadow-lg hover:shadow-xl smooth-transition">
-            <CardHeader>
-              <ListMusic className="h-10 w-10 text-accent mb-2" />
-              <CardTitle className="font-headline">Sufi Rhythms</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription>
-                Mystical and uplifting Sufi music to elevate your spirit and
-                connect.
-              </CardDescription>
-            </CardContent>
-          </Card>
+          <Link href="/playlists/piano-melodies">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+              <CardHeader>
+                <PiPianoKeysFill className="h-10 w-10 text-accent mb-2" />
+                <CardTitle className="font-headline">Piano Melodies</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Calming piano pieces for relaxation, focus, and peaceful
+                  moments.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href="/playlists/duduk-harmonies">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+              <CardHeader>
+                <GiFlute className="h-10 w-10 text-accent mb-2" />
+                <CardTitle className="font-headline">Duduk Harmonies</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Soulful and ancient duduk tunes for deep meditation and
+                  introspection.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href="/playlists/sufi-rhythms">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+              <CardHeader>
+                <FaPrayingHands className="h-10 w-10 text-accent mb-2" />
+                <CardTitle className="font-headline">Sufi Rhythms</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Mystical and uplifting Sufi music to elevate your spirit and
+                  connect.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </section>
     </div>
