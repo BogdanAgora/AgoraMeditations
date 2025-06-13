@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'AgoraMeditation - Find Your Inner Peace',
+  title: 'AgoraMeditations - Find Your Inner Peace',
   description: 'Explore guided meditations, relaxing videos, and insightful blog posts to enhance your mindfulness journey.',
 };
 

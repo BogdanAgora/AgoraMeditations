@@ -1,4 +1,4 @@
-# **App Name**: AgoraMeditation
+# **App Name**: AgoraMeditations
 
 ## Core Features:
 

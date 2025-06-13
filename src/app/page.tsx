@@ -11,7 +11,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <Sunrise className="mx-auto h-24 w-24 text-primary mb-6" />
           <h1 className="text-5xl font-headline font-bold text-foreground mb-4">
-            Welcome to AgoraMeditation
+            Welcome to AgoraMeditations
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Discover a sanctuary for your mind. Explore guided meditations, soothing nature videos, and insightful articles to cultivate inner peace and mindfulness.
@@ -75,7 +75,7 @@ export default function Home() {
             Nourish Your Mind
           </h2>
           <p className="text-lg text-muted-foreground mb-6">
-            Our blog features articles on mindfulness practices, meditation benefits, and tips for integrating tranquility into your daily life. Content is crafted with care, supported by AI insights.
+            Our AgoraMeditations blog features articles on mindfulness practices, meditation benefits, and tips for integrating tranquility into your daily life. Content is crafted with care, supported by AI insights.
           </p>
           <Button asChild className="smooth-transition">
             <Link href="/blog">

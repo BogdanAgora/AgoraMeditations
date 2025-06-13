@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
   return {
-    title: `${post.metadata.title} | AgoraMeditation Blog`,
+    title: `${post.metadata.title} | AgoraMeditations Blog`,
     description: post.metadata.excerpt,
   };
 }

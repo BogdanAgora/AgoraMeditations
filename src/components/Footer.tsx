@@ -7,14 +7,14 @@ export default function Footer() {
         <div className="flex justify-center items-center mb-4">
           <Image 
             src="/Agora_logo_bkg_negru.png" 
-            alt="AgoraMeditation Logo" 
+            alt="AgoraMeditations Logo" 
             width={24} 
             height={24} 
             className="h-6 w-6"
             data-ai-hint="logo"
           />
-          <p className="ml-2 text-sm text-muted-foreground">
-            AgoraMeditation &copy; {new Date().getFullYear()}
+          <p className="ml-2 text-sm text-muted-foreground" data-ai-hint="copyright text">
+            AgoraMeditations &copy; {new Date().getFullYear()}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">

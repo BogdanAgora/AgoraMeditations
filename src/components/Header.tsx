@@ -10,14 +10,14 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 smooth-transition">
           <Image 
             src="/Agora_logo_bkg_negru.png" 
-            alt="AgoraMeditation Logo" 
+            alt="AgoraMeditations Logo" 
             width={32} 
             height={32} 
             className="h-8 w-8"
-            data-ai-hint="logo" 
+            data-ai-hint="logo"
           />
           <h1 className="text-2xl font-headline font-bold text-foreground">
-            AgoraMeditation
+            AgoraMeditations
           </h1>
         </Link>
         <nav className="flex items-center gap-4">

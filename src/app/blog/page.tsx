@@ -9,7 +9,7 @@ export default function BlogPage() {
     <div className="space-y-8">
       <div className="text-center">
         <BookOpen className="mx-auto h-16 w-16 text-primary mb-4" />
-        <h1 className="text-4xl font-headline font-bold text-foreground">Our Blog</h1>
+        <h1 className="text-4xl font-headline font-bold text-foreground">AgoraMeditations Blog</h1>
         <p className="text-lg text-muted-foreground mt-2 max-w-xl mx-auto">
           Insights, tips, and reflections on mindfulness, meditation, and well-being.
         </p>

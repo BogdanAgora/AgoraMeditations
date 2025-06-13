@@ -36,7 +36,7 @@ export default async function VideosPage() {
     <div className="space-y-8">
       <div className="text-center">
         <Youtube className="mx-auto h-16 w-16 text-primary mb-4" />
-        <h1 className="text-4xl font-headline font-bold text-foreground">Meditation Videos</h1>
+        <h1 className="text-4xl font-headline font-bold text-foreground">AgoraMeditations Videos</h1>
         <p className="text-lg text-muted-foreground mt-2 max-w-xl mx-auto">
           Find guided meditations, calming nature scenes, and relaxing music to support your mindfulness practice.
         </p>
