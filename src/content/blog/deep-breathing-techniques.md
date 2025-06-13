@@ -3,7 +3,7 @@ title: "The Power of Breath: Simple Deep Breathing Techniques for Calm and Clari
 date: "2024-07-15"
 excerpt: "Unlock the profound benefits of conscious breathing with these easy-to-learn deep breathing exercises. Reduce stress, enhance focus, and improve your overall well-being."
 author: "Dr. Anjali Sharma"
-image: "https://placehold.co/800x400.png"
+image: "https://dummyimage.com/800x400/e0e0e0/ffffff&text=Deep+Breathing+Techniques"
 tags: ["breathing exercises", "stress relief", "meditation", "relaxation", "health"]
 ---
 

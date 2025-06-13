@@ -3,7 +3,7 @@ title: "Embracing Mindful Mornings: A Guide to Starting Your Day with Peace"
 date: "2024-07-20"
 excerpt: "Discover how incorporating mindfulness into your morning routine can transform your entire day, bringing calm, focus, and positivity."
 author: "Agora AI Assistant"
-image: "https://placehold.co/800x400.png"
+image: "https://dummyimage.com/800x400/e0e0e0/ffffff&text=Mindful+Mornings"
 tags: ["mindfulness", "morning routine", "meditation", "well-being"]
 ---
 
