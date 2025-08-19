@@ -6,6 +6,8 @@ export interface Video {
   thumbnailUrl: string;
   youtubeVideoId: string;
   thumbnailAiHint?: string;
+  publishedAt?: string;
+  channelTitle?: string;
 }
 
 export interface BlogPost {

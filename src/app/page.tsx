@@ -13,40 +13,27 @@ import { Youtube, BookOpen, Sunrise } from "lucide-react";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { GiFlute } from "react-icons/gi";
 import { FaPrayingHands } from "react-icons/fa";
+import { youtubeService } from "@/lib/youtube";
 
 async function getLatestVideos() {
-  try {
-    const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
-    const CHANNEL_ID = "UCcCeTkWFuG5nCDhY6wMJiGw";
-
-    if (!YOUTUBE_API_KEY) {
-      throw new Error("YouTube API key is not configured");
-    }
-
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=2&type=video`,
-    );
-
-    if (!response.ok) {
-      throw new Error(`YouTube API responded with status ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    return data.items.map((item: any) => ({
-      id: item.id.videoId,
-      title: item.snippet.title,
-      thumbnail:
-        item.snippet.thumbnails.maxres?.url ||
-        item.snippet.thumbnails.high?.url ||
-        item.snippet.thumbnails.medium?.url,
-      description: item.snippet.description,
-      publishedAt: item.snippet.publishedAt,
-    }));
-  } catch (error) {
-    console.error("Error fetching YouTube videos:", error);
+  const CHANNEL_ID = "UCcCeTkWFuG5nCDhY6wMJiGw";
+  
+  const result = await youtubeService.getChannelVideos(CHANNEL_ID, 2);
+  
+  if (!result.success) {
+    // Log the error but return empty array to maintain existing behavior
+    console.error("Error fetching YouTube videos:", result.error?.message);
     return [];
   }
+
+  // Transform the Video[] data to match the expected format for the homepage
+  return (result.data || []).map((video) => ({
+    id: video.youtubeVideoId,
+    title: video.title,
+    thumbnail: video.thumbnailUrl,
+    description: video.description,
+    publishedAt: video.publishedAt || new Date().toISOString(),
+  }));
 }
 
 export default async function Home() {

@@ -3,34 +3,76 @@ import type { Video } from '@/lib/types';
 import VideoCard from '@/components/VideoCard';
 import { Youtube, AlertTriangle, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { youtubeService, type YouTubeError } from '@/lib/youtube';
 
-async function getVideos(): Promise<Video[] | null> {
+// This is the Channel ID for @AgoraMeditations
+const YOUTUBE_CHANNEL_ID = "UCcCeTkWFuG5nCDhY6wMJiGw";
+
+interface VideoResult {
+  videos: Video[] | null;
+  error: YouTubeError | null;
+}
+
+async function getVideos(): Promise<VideoResult> {
   try {
-    const apiUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:9002'}/api/videos`;
-    const res = await fetch(apiUrl, {
-    });
-
-    if (!res.ok) {
-      let errorMessage = `API request failed with status ${res.status}: ${res.statusText}`;
-      try {
-        const errorData = await res.json();
-        if (errorData && errorData.message) {
-          errorMessage = errorData.message;
-        }
-      } catch (jsonError) {
-        console.warn('Could not parse error response as JSON:', jsonError);
-      }
-      throw new Error(`Failed to fetch videos: ${errorMessage}`);
+    const result = await youtubeService.getChannelVideos(YOUTUBE_CHANNEL_ID, 9);
+    
+    if (!result.success) {
+      return {
+        videos: null,
+        error: result.error || null
+      };
     }
-    return res.json();
+    
+    return {
+      videos: result.data || [],
+      error: null
+    };
   } catch (error) {
-    console.error(error); 
-    return null;
+    console.error('[Videos Page] Unexpected error:', error);
+    return {
+      videos: null,
+      error: {
+        type: 'UNKNOWN',
+        message: 'An unexpected error occurred while fetching videos',
+        details: error
+      }
+    };
+  }
+}
+
+function getErrorMessage(error: YouTubeError): { title: string; message: string } {
+  switch (error.type) {
+    case 'API_KEY_MISSING':
+      return {
+        title: 'API Configuration Missing',
+        message: 'YouTube API key is not configured. Please ensure the YOUTUBE_API_KEY environment variable is set and restart the server.'
+      };
+    case 'API_KEY_INVALID':
+      return {
+        title: 'API Key Invalid',
+        message: 'The YouTube API key is invalid or restricted. Please check your API key configuration and ensure it has access to the YouTube Data API v3.'
+      };
+    case 'QUOTA_EXCEEDED':
+      return {
+        title: 'API Quota Exceeded',
+        message: 'The YouTube API quota has been exceeded. Please try again later or check your API usage limits.'
+      };
+    case 'NETWORK_ERROR':
+      return {
+        title: 'Network Error',
+        message: 'Unable to connect to YouTube API. Please check your internet connection and try again.'
+      };
+    default:
+      return {
+        title: 'Error Loading Videos',
+        message: error.message || 'An unexpected error occurred while loading videos. Please try again later.'
+      };
   }
 }
 
 export default async function VideosPage() {
-  const videos = await getVideos();
+  const { videos, error } = await getVideos();
 
   return (
     <div className="space-y-8">
@@ -42,28 +84,28 @@ export default async function VideosPage() {
         </p>
       </div>
 
-      {!videos ? (
+      {error ? (
         <Card className="border-destructive bg-destructive/10">
           <CardHeader>
             <CardTitle className="flex items-center text-destructive">
               <AlertTriangle className="mr-2 h-5 w-5" />
-              Error Loading Videos
+              {getErrorMessage(error).title}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-destructive">
-              We couldn't load the videos at this time. This might be due to an issue with the YouTube API connection (e.g., invalid API key, quota exceeded) or a server-side problem. 
-              Please ensure the YOUTUBE_API_KEY is correctly set in your server environment. Check the server console logs for more specific error details.
+              {getErrorMessage(error).message}
             </p>
+            {error.type === 'API_KEY_MISSING' && (
+              <div className="mt-4 p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">
+                  <strong>For developers:</strong> Create a .env.local file with YOUTUBE_API_KEY=your_api_key_here and restart the development server.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
-      ) : videos.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <VideoCard key={video.id} video={video} />
-          ))}
-        </div>
-      ) : (
+      ) : !videos || videos.length === 0 ? (
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="flex items-center text-foreground">
@@ -82,6 +124,12 @@ export default async function VideosPage() {
             </p>
           </CardContent>
         </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {videos.map((video) => (
+            <VideoCard key={video.id} video={video} />
+          ))}
+        </div>
       )}
     </div>
   );

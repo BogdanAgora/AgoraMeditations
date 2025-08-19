@@ -4,6 +4,7 @@ import { Sunrise } from "lucide-react";
 import { PiPianoKeysFill } from "react-icons/pi";
 import { GiFlute } from "react-icons/gi";
 import { FaPrayingHands } from "react-icons/fa";
+import { youtubeService } from "@/lib/youtube";
 
 // Define our playlist data
 const playlists = {
@@ -13,18 +14,6 @@ const playlists = {
       "Calming piano pieces for relaxation, focus, and peaceful moments.",
     icon: PiPianoKeysFill,
     playlistId: "PLB3xbTNRx64RSHP8slh42Byi0neymleDp",
-    videos: async (YOUTUBE_API_KEY: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=PLB3xbTNRx64RSHP8slh42Byi0neymleDp&part=snippet,contentDetails&maxResults=50`,
-      );
-      const data = await response.json();
-      const items = data.items || [];
-      return items.sort(
-        (a: any, b: any) =>
-          new Date(b.snippet.publishedAt).getTime() -
-          new Date(a.snippet.publishedAt).getTime(),
-      );
-    },
   },
   "duduk-harmonies": {
     title: "Duduk Harmonies",
@@ -32,18 +21,6 @@ const playlists = {
       "Soulful and ancient duduk tunes for deep meditation and introspection.",
     icon: GiFlute,
     playlistId: "PLB3xbTNRx64TaRVQOvt03xdihYNeOn6qD",
-    videos: async (YOUTUBE_API_KEY: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=PLB3xbTNRx64TaRVQOvt03xdihYNeOn6qD&part=snippet,contentDetails&maxResults=50`,
-      );
-      const data = await response.json();
-      const items = data.items || [];
-      return items.sort(
-        (a: any, b: any) =>
-          new Date(b.snippet.publishedAt).getTime() -
-          new Date(a.snippet.publishedAt).getTime(),
-      );
-    },
   },
   "sufi-rhythms": {
     title: "Sufi Rhythms",
@@ -51,18 +28,6 @@ const playlists = {
       "Mystical and uplifting Sufi music to elevate your spirit and connect.",
     icon: FaPrayingHands,
     playlistId: "PLB3xbTNRx64Q4HHkoILBdfdDQ3d2epOBw",
-    videos: async (YOUTUBE_API_KEY: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=PLB3xbTNRx64Q4HHkoILBdfdDQ3d2epOBw&part=snippet,contentDetails&maxResults=50`,
-      );
-      const data = await response.json();
-      const items = data.items || [];
-      return items.sort(
-        (a: any, b: any) =>
-          new Date(b.snippet.publishedAt).getTime() -
-          new Date(a.snippet.publishedAt).getTime(),
-      );
-    },
   },
 };
 
@@ -87,8 +52,34 @@ export default async function PlaylistPage(props: {
   const playlist = playlists[slug as keyof typeof playlists];
   if (!playlist) notFound();
 
-  const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
-  const videos = await playlist.videos(YOUTUBE_API_KEY);
+  // Use shared YouTube service to get playlist videos
+  const result = await youtubeService.getPlaylistVideos(playlist.playlistId, 50);
+  
+  let videos: any[] = [];
+  let errorMessage: string | null = null;
+
+  if (result.success) {
+    videos = result.data || [];
+  } else {
+    // Handle errors gracefully with user-friendly messages
+    switch (result.error?.type) {
+      case 'API_KEY_MISSING':
+        errorMessage = 'YouTube API configuration is missing. Please check the server configuration.';
+        break;
+      case 'API_KEY_INVALID':
+        errorMessage = 'YouTube API key is invalid. Please check the server configuration.';
+        break;
+      case 'QUOTA_EXCEEDED':
+        errorMessage = 'YouTube API quota exceeded. Please try again later.';
+        break;
+      case 'NETWORK_ERROR':
+        errorMessage = 'Network error occurred. Please check your connection and try again.';
+        break;
+      default:
+        errorMessage = 'Unable to load playlist videos. Please try again later.';
+    }
+    console.error(`[Playlist ${slug}] YouTube API Error:`, result.error);
+  }
 
   const Icon = playlist.icon;
 
@@ -105,7 +96,17 @@ export default async function PlaylistPage(props: {
           {playlist.description}
         </p>
       </div>
-      {videos.length === 0 ? (
+      {errorMessage ? (
+        <div className="text-center py-12">
+          <Sunrise className="mx-auto h-16 w-16 text-destructive mb-4" />
+          <p className="text-lg text-muted-foreground mb-2">
+            {errorMessage}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            If this problem persists, please contact support.
+          </p>
+        </div>
+      ) : videos.length === 0 ? (
         <div className="text-center py-12">
           <Sunrise className="mx-auto h-16 w-16 text-primary mb-4" />
           <p className="text-lg text-muted-foreground">
