@@ -3,7 +3,6 @@ import { getPostData, getAllPostSlugs } from "@/lib/blog";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
-import BlogSummarizer from "@/components/BlogSummarizer";
 import Image from 'next/image';
 import { remark } from 'remark';
 import html from 'remark-html';

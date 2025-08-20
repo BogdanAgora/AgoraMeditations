@@ -171,6 +171,9 @@ export interface YouTubeServiceInterface {
 export class YouTubeService implements YouTubeServiceInterface {
   private apiKey: string;
   private logger: YouTubeLogger;
+  private validationPromise: Promise<YouTubeApiResult<boolean>> | null = null;
+  private lastValidationTime: number = 0;
+  private validationCacheTime: number = 5 * 60 * 1000; // 5 minutes cache
 
   constructor(apiKey?: string, logger?: YouTubeLogger) {
     this.apiKey = apiKey || process.env.YOUTUBE_API_KEY || '';
@@ -178,6 +181,26 @@ export class YouTubeService implements YouTubeServiceInterface {
   }
 
   async validateApiKey(): Promise<YouTubeApiResult<boolean>> {
+    const now = Date.now();
+    
+    // Check if we have a cached result that's still valid
+    if (this.validationPromise && (now - this.lastValidationTime) < this.validationCacheTime) {
+      return this.validationPromise;
+    }
+    
+    // If we're already validating, return the existing promise
+    if (this.validationPromise && (now - this.lastValidationTime) < this.validationCacheTime + 30000) {
+      return this.validationPromise;
+    }
+    
+    // Create a new validation promise
+    this.validationPromise = this.performApiKeyValidation();
+    this.lastValidationTime = now;
+    
+    return this.validationPromise;
+  }
+  
+  private async performApiKeyValidation(): Promise<YouTubeApiResult<boolean>> {
     if (!this.apiKey || this.apiKey === "YOUR_YOUTUBE_API_KEY_HERE" || this.apiKey.trim() === "") {
       const error: YouTubeError = {
         type: 'API_KEY_MISSING',
