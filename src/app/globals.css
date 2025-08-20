@@ -2,6 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .prose p {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Additional spacing for blog content */
+  .blog-content h1, .blog-content h2, .prose h1, .prose h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .blog-content h3, .prose h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content p, .prose p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content ul, .blog-content ol, .prose ul, .prose ol {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content li, .prose li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
 body {
   @apply font-body antialiased;
 }

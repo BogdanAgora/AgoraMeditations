@@ -10,16 +10,22 @@ interface BlogPostCardProps {
 }
 
 export default function BlogPostCard({ post }: BlogPostCardProps) {
+  // Ensure date is a string or convert it to a string
+  const dateString = typeof post.metadata.date === 'string' 
+    ? new Date(post.metadata.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    : post.metadata.date instanceof Date
+    ? post.metadata.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    : 'Unknown date';
+
   return (
     <Card className="flex flex-col h-full overflow-hidden shadow-lg hover:shadow-xl smooth-transition">
       {post.metadata.image && (
         <Link href={`/blog/${post.slug}`} className="block aspect-video relative">
             <Image
               src={post.metadata.image}
-              alt={post.metadata.title}
+              alt={post.metadata.title || 'Blog post image'}
               layout="fill"
               objectFit="cover"
-              data-ai-hint="blog post image"
             />
         </Link>
       )}
@@ -32,7 +38,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
           <div className="flex items-center gap-1">
             <CalendarDays className="h-3 w-3" />
-            <span>{new Date(post.metadata.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>{dateString}</span>
           </div>
           {post.metadata.author && (
             <div className="flex items-center gap-1">

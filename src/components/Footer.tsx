@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex justify-center items-center mb-4">
           <Image 
-            src="/Agora_logo_bkg_negru.png" 
+            src="/icon.png" 
             alt="AgoraMeditations Logo" 
             width={24} 
             height={24} 

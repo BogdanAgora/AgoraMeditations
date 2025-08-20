@@ -1,58 +1,72 @@
 import fs from 'fs';
 import path from 'path';
-import type { BlogPost } from './types';
+import matter from 'gray-matter';
+import { BlogPost } from './types';
 
-const postsDirectory = path.join(process.cwd(), 'src/content/blog');
+const postsDirectory = path.join(process.cwd(), 'public', 'blogposts');
 
-// Basic frontmatter parser
-function parseFrontmatter(fileContent: string): { metadata: BlogPost['metadata']; content: string } {
-  const match = fileContent.match(/^---\s*([\s\S]*?)\s*---/);
-  
-  const defaultMetadata: BlogPost['metadata'] = {
-    title: 'Untitled Post',
-    date: new Date().toISOString().split('T')[0],
-    excerpt: '',
-  };
-
-  if (!match) {
-    return { metadata: defaultMetadata, content: fileContent };
+// Function to extract title from markdown content
+function extractTitleFromContent(content: string): string | null {
+  // Look for a line starting with \"**Blog Post Title:**\" or \"**Blog Post:**\"
+  const titleMatch = content.match(/\*\*Blog Post(?: Title)?:\*\*\s*(.+?)(?:\n|$)/i);
+  if (titleMatch && titleMatch[1]) {
+    return titleMatch[1].trim();
   }
-
-  const frontmatter = match[1];
-  const content = fileContent.substring(match[0].length).trim();
   
-  const metadata = { ...defaultMetadata };
-
-  frontmatter.split('\n').forEach(line => {
-    const [key, ...valueParts] = line.split(':');
-    if (key && valueParts.length > 0) {
-      const value = valueParts.join(':').trim().replace(/^['"](.*)['"]$/, '$1'); // Remove surrounding quotes
-      if (key.trim() === 'tags' && value) {
-        (metadata as any)[key.trim()] = value.split(',').map(tag => tag.trim());
-      } else {
-        (metadata as any)[key.trim()] = value;
-      }
-    }
-  });
-
-  return { metadata: metadata as BlogPost['metadata'], content };
+  // If not found, try to get the first heading
+  const headingMatch = content.match(/^#\s+(.+?)(?:\n|$)/m);
+  if (headingMatch && headingMatch[1]) {
+    return headingMatch[1].trim();
+  }
+  
+  return null;
 }
 
-
 export function getSortedPostsData(): Omit<BlogPost, 'content'>[] {
-  const fileNames = fs.readdirSync(postsDirectory);
-  const allPostsData = fileNames
-    .filter(fileName => fileName.endsWith('.md'))
-    .map(fileName => {
-      const slug = fileName.replace(/\.md$/, '');
-      const fullPath = path.join(postsDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { metadata } = parseFrontmatter(fileContents);
-      return {
-        slug,
-        metadata,
-      };
-    });
+  const directories = fs.readdirSync(postsDirectory, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
+  const allPostsData = directories.map(dir => {
+    const fullPath = path.join(postsDirectory, dir);
+    const files = fs.readdirSync(fullPath);
+
+    const markdownFile = files.find(file => file.endsWith('.md') || file.endsWith('.mdx'));
+    const imageFile = files.find(file => file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.jpeg'));
+
+    if (!markdownFile) {
+      return null;
+    }
+
+    const slug = encodeURIComponent(dir);
+    const markdownPath = path.join(fullPath, markdownFile);
+    const fileContents = fs.readFileSync(markdownPath, 'utf8');
+    
+    // Get file creation time
+    const fileStats = fs.statSync(markdownPath);
+    const fileCreationDate = fileStats.birthtime;
+    
+    const { data, content } = matter(fileContents);
+    
+    // Extract title from content if not in frontmatter
+    const title = data.title || extractTitleFromContent(content) || dir;
+    
+    // Use date from frontmatter or file creation date
+    const date = data.date || fileCreationDate;
+
+    // Create a proper URL path for the image
+    const image = imageFile ? `/blogposts/${encodeURIComponent(dir)}/${encodeURIComponent(imageFile)}` : null;
+
+    return {
+      slug,
+      metadata: { 
+        ...data, 
+        title,
+        date,
+        image 
+      } as BlogPost['metadata'],
+    };
+  }).filter(post => post !== null) as Omit<BlogPost, 'content'>[];
 
   return allPostsData.sort((a, b) => {
     if (a.metadata.date < b.metadata.date) {
@@ -64,33 +78,73 @@ export function getSortedPostsData(): Omit<BlogPost, 'content'>[] {
 }
 
 export function getAllPostSlugs() {
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames
-    .filter(fileName => fileName.endsWith('.md'))
-    .map(fileName => {
-      return {
-        params: {
-          slug: fileName.replace(/\.md$/, ''),
-        },
-      };
-    });
+  const directories = fs.readdirSync(postsDirectory, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
+  return directories.map(dir => {
+    return {
+      params: {
+        slug: encodeURIComponent(dir),
+      },
+    };
+  });
 }
 
 export async function getPostData(slug: string): Promise<BlogPost | null> {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
-  try {
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { metadata, content } = parseFrontmatter(fileContents);
-
-    // For simplicity, markdown content is returned as is.
-    // In a real app, you'd convert markdown to HTML here (e.g., using 'remark' or 'unified').
-    return {
-      slug,
-      metadata,
-      content,
-    };
-  } catch (error) {
-    console.error(`Error reading blog post ${slug}:`, error);
+  // Decode the slug to handle spaces and special characters
+  const decodedSlug = decodeURIComponent(slug);
+  // Create the path using the decoded slug for file system access
+  const fullPath = path.join(postsDirectory, decodedSlug);
+  
+  // Check if directory exists
+  if (!fs.existsSync(fullPath)) {
     return null;
   }
+  
+  const files = fs.readdirSync(fullPath);
+
+  const markdownFile = files.find(file => file.endsWith('.md') || file.endsWith('.mdx'));
+
+  if (!markdownFile) {
+    return null;
+  }
+
+  const markdownPath = path.join(fullPath, markdownFile);
+  const fileContents = fs.readFileSync(markdownPath, 'utf8');
+  
+  // Get file creation time
+  const fileStats = fs.statSync(markdownPath);
+  const fileCreationDate = fileStats.birthtime;
+  
+  const { data, content } = matter(fileContents);
+  
+  // Extract title from content if not in frontmatter
+  const title = data.title || extractTitleFromContent(content) || slug;
+  
+  // Use date from frontmatter or file creation date
+  const date = data.date || fileCreationDate;
+
+  const imageFile = files.find(file => file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.jpeg'));
+  // Create a proper URL path for the image
+  const image = imageFile ? `/blogposts/${slug}/${encodeURIComponent(imageFile)}` : null;
+
+  // Process content to remove the title if it's at the beginning
+  let processedContent = content;
+  const titleFromContent = extractTitleFromContent(content);
+  if (titleFromContent) {
+    // Remove the title line from the content
+    processedContent = content.replace(/\*\*Blog Post(?: Title)?:\*\*\s*.+/, '').trim();
+  }
+
+  return {
+    slug,
+    metadata: { 
+      ...data, 
+      title,
+      date,
+      image 
+    } as BlogPost['metadata'],
+    content: processedContent,
+  };
 }

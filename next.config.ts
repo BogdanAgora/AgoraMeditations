@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -24,6 +25,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/blogposts/:slug/:image',
+        destination: '/blogposts/:slug/:image',
+      },
+    ]
+  },
+  // Add assetPrefix to handle static assets correctly
+  assetPrefix: '',
 };
 
 export default nextConfig;
