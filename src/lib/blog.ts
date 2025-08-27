@@ -3,6 +3,16 @@ import path from 'path';
 import matter from 'gray-matter';
 import { BlogPost } from './types';
 
+// Function to create a clean slug from a directory name
+function createCleanSlug(dirName: string): string {
+  return dirName
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+}
+
 // Use a more flexible approach for determining the posts directory
 const postsDirectory = path.join(
   process.cwd(), 
@@ -11,7 +21,7 @@ const postsDirectory = path.join(
 
 // Function to extract title from markdown content
 function extractTitleFromContent(content: string): string | null {
-  // Look for a line starting with \"**Blog Post Title:**\" or \"**Blog Post:**\"
+  // Look for a line starting with "**Blog Post Title:**" or "**Blog Post:**"
   const titleMatch = content.match(/\*\*Blog Post(?: Title)?:\*\*\s*(.+?)(?:\n|$)/i);
   if (titleMatch && titleMatch[1]) {
     return titleMatch[1].trim();
@@ -42,7 +52,7 @@ export function getSortedPostsData(): Omit<BlogPost, 'content'>[] {
       return null;
     }
 
-    const slug = encodeURIComponent(dir);
+    const slug = createCleanSlug(dir);
     const markdownPath = path.join(fullPath, markdownFile);
     const fileContents = fs.readFileSync(markdownPath, 'utf8');
     
@@ -99,8 +109,7 @@ export function getAllPostSlugs() {
     return directories.map(dir => {
       return {
         params: {
-          // Don't encode here, let Next.js handle it
-          slug: dir,
+          slug: createCleanSlug(dir),
         },
       };
     });
@@ -110,47 +119,51 @@ export function getAllPostSlugs() {
   }
 }
 
+// Create a mapping of clean slugs to directory names
+function getSlugToDirMapping(): Record<string, string> {
+  const directories = fs.readdirSync(postsDirectory, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+  
+  const mapping: Record<string, string> = {};
+  directories.forEach(dir => {
+    mapping[createCleanSlug(dir)] = dir;
+  });
+  
+  return mapping;
+}
+
 export async function getPostData(slug: string): Promise<BlogPost | null> {
   try {
-    // For Vercel deployments, we need to be careful about encoding
-    // The slug might already be decoded, or it might be encoded
-    let decodedSlug = slug;
+    // Get the mapping of clean slugs to directory names
+    const slugToDirMapping = getSlugToDirMapping();
     
-    // Try to decode it, but catch if it's already decoded
-    try {
-      decodedSlug = decodeURIComponent(slug);
-    } catch (e) {
-      // If it fails, it's likely already decoded
-      decodedSlug = slug;
+    // Find the actual directory name for this clean slug
+    const dirName = slugToDirMapping[slug];
+    if (!dirName) {
+      console.error(`Blog post directory not found for slug: ${slug}`);
+      return null;
     }
     
-    // Create the path using the decoded slug for file system access
-    const fullPath = path.join(postsDirectory, decodedSlug);
+    // Create the path using the actual directory name
+    const fullPath = path.join(postsDirectory, dirName);
     
     // Check if directory exists
     if (!fs.existsSync(fullPath)) {
       console.error(`Blog post directory not found: ${fullPath}`);
-      // Try with the original slug as well
-      const altPath = path.join(postsDirectory, slug);
-      if (!fs.existsSync(altPath)) {
-        console.error(`Alternative blog post directory not found: ${altPath}`);
-        return null;
-      }
-      // Use the alternative path
-      console.log(`Using alternative path: ${altPath}`);
+      return null;
     }
     
-    const finalPath = fs.existsSync(fullPath) ? fullPath : path.join(postsDirectory, slug);
-    const files = fs.readdirSync(finalPath);
+    const files = fs.readdirSync(fullPath);
 
     const markdownFile = files.find(file => file.endsWith('.md') || file.endsWith('.mdx'));
 
     if (!markdownFile) {
-      console.error(`No markdown file found in directory: ${finalPath}`);
+      console.error(`No markdown file found in directory: ${fullPath}`);
       return null;
     }
 
-    const markdownPath = path.join(finalPath, markdownFile);
+    const markdownPath = path.join(fullPath, markdownFile);
     const fileContents = fs.readFileSync(markdownPath, 'utf8');
     
     // Get file creation time
@@ -160,14 +173,14 @@ export async function getPostData(slug: string): Promise<BlogPost | null> {
     const { data, content } = matter(fileContents);
     
     // Extract title from content if not in frontmatter
-    const title = data.title || extractTitleFromContent(content) || slug;
+    const title = data.title || extractTitleFromContent(content) || dirName;
     
     // Use date from frontmatter or file creation date
     const date = data.date || fileCreationDate;
 
     const imageFile = files.find(file => file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.jpeg'));
     // Create a proper URL path for the image (still served from public directory)
-    const image = imageFile ? `/blogposts/${slug}/${encodeURIComponent(imageFile)}` : null;
+    const image = imageFile ? `/blogposts/${encodeURIComponent(dirName)}/${encodeURIComponent(imageFile)}` : null;
 
     // Process content to remove the title if it's at the beginning
     let processedContent = content;
