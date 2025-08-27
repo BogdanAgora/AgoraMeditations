@@ -1,3 +1,6 @@
+---
+date: '2025-08-20'
+---
 **Blog Post Title:** The Ultimate Playlist for Your Health: How Music Heals Your Mind and Body
 
 **Introduction:**

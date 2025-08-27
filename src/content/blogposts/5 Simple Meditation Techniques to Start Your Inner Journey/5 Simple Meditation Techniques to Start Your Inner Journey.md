@@ -1,3 +1,6 @@
+---
+date: '2025-08-27'
+---
 ## Beyond the Om: Why Meditation is Your Brain's Best Friend (and What the Future Holds)
 
 Feeling swamped by stress? Are racing thoughts keeping you up at night? Or perhaps you’re just generally feeling…off? You're not alone. We live in a world engineered for distraction, a constant barrage of notifications, demands, and expectations. But what if there was a way to gently nudge your mind back into balance, to find a quiet space amidst the digital noise?

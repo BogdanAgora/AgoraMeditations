@@ -1,3 +1,6 @@
+---
+date: '2025-08-20'
+---
 **Blog Post Title:** Don't Just Scroll Through Life: How to Master Mindfulness in a Wildly Distracted World
 
 **I. Introduction**

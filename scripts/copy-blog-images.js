@@ -45,6 +45,60 @@ function copyImages(srcDir, destDir) {
   }
 }
 
+// Add dates to blog posts if they don't have them
+function addDatesToPosts() {
+  const matter = require('gray-matter');
+  
+  if (!fs.existsSync(srcBlogDir)) {
+    console.log(`Source directory does not exist: ${srcBlogDir}`);
+    return;
+  }
+
+  const directories = fs.readdirSync(srcBlogDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
+  directories.forEach(dir => {
+    const dirPath = path.join(srcBlogDir, dir);
+    const files = fs.readdirSync(dirPath);
+    
+    const markdownFile = files.find(file => file.endsWith('.md') || file.endsWith('.mdx'));
+    
+    if (markdownFile) {
+      const markdownPath = path.join(dirPath, markdownFile);
+      
+      // Read the file
+      const fileContents = fs.readFileSync(markdownPath, 'utf8');
+      
+      // Parse frontmatter
+      const { data, content } = matter(fileContents);
+      
+      // If no date is set, use the file's birthtime
+      if (!data.date) {
+        const fileStats = fs.statSync(markdownPath);
+        const fileCreationDate = fileStats.birthtime;
+        
+        // Format date as YYYY-MM-DD
+        const formattedDate = fileCreationDate.toISOString().split('T')[0];
+        
+        // Add date to frontmatter
+        data.date = formattedDate;
+        
+        // Rebuild the file with new frontmatter
+        const updatedContent = matter.stringify(content, data);
+        
+        // Write back to file
+        fs.writeFileSync(markdownPath, updatedContent);
+        
+        console.log(`Added date ${formattedDate} to ${dir}/${markdownFile}`);
+      }
+    }
+  });
+}
+
+console.log('Adding dates to blog posts...');
+addDatesToPosts();
+
 console.log('Copying new/updated images from src/content/blogposts to public/blogposts...');
 copyImages(srcBlogDir, publicBlogDir);
 console.log('Done!');
