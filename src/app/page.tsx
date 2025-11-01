@@ -39,9 +39,13 @@ async function getLatestVideos() {
 export default async function Home() {
   return (
     <div className="space-y-12">
-      <section className="text-center py-12 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg shadow-lg">
-        <div className="container mx-auto px-4">
-          <Sunrise className="mx-auto h-24 w-24 text-primary mb-6" />
+      <section 
+        className="text-center py-12 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg shadow-lg bg-cover bg-center relative"
+        style={{ backgroundImage: "url('/fundal.png')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-background/80 to-background/60 rounded-lg"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <Sunrise className="mx-auto h-24 w-24 text-black mb-6" />
           <h1 className="text-5xl font-headline font-bold text-foreground mb-4">
             Welcome to AgoraMeditations
           </h1>
@@ -54,7 +58,7 @@ export default async function Home() {
             <Button
               asChild
               size="lg"
-              className="smooth-transition bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="smooth-transition bg-black text-white hover:bg-gray-800"
             >
               <Link href="/videos">
                 <Youtube className="mr-2 h-5 w-5" />
@@ -63,9 +67,8 @@ export default async function Home() {
             </Button>
             <Button
               asChild
-              variant="outline"
               size="lg"
-              className="smooth-transition border-primary text-primary hover:bg-primary/10"
+              className="smooth-transition bg-black text-white hover:bg-gray-800"
             >
               <Link href="/blog">
                 <BookOpen className="mr-2 h-5 w-5" />
@@ -84,11 +87,10 @@ export default async function Home() {
                 Find Your Calm
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Our curated collection of YouTube videos offers serene
-                landscapes, calming music, and guided meditation sessions to
-                help you relax, de-stress, and find focus.
+                Our curated collection of YouTube videos offers serene landscapes and calming music to help you relax, de-stress, and find focus.
+                We blend ancient sounds and modern healing vibes using instruments like the Armenian Duduk, Sufi Ney, Native and Tibetan flutes, and piano — inspired by Sufi wisdom, Rumi's poetry, and timeless traditions.
               </p>
-              <Button asChild className="smooth-transition">
+              <Button asChild className="smooth-transition bg-black text-white hover:bg-gray-800">
                 <Link href="/videos">Start Watching</Link>
               </Button>
             </div>
@@ -124,12 +126,9 @@ export default async function Home() {
                 Nourish Your Mind
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Our AgoraMeditations blog features articles on mindfulness
-                practices, meditation benefits, and tips for integrating
-                tranquility into your daily life. Content is crafted with care,
-                supported by AI insights.
+                Our AgoraMeditations blog features articles on mindfulness practices, meditation benefits, the positive effects of music on mental health and tips for integrating tranquility into your daily life. Content is crafted with care, supported by AI insights.
               </p>
-              <Button asChild className="smooth-transition">
+              <Button asChild className="smooth-transition bg-black text-white hover:bg-gray-800">
                 <Link href="/blog">Explore Articles</Link>
               </Button>
             </div>
