@@ -2,8 +2,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Sunrise } from "lucide-react";
 import { PiPianoKeysFill } from "react-icons/pi";
-import { GiFlute } from "react-icons/gi";
+import { GiFlute, GiDervishSwords, GiLotusFlower, GiPrayerBeads } from "react-icons/gi";
 import { FaPrayingHands } from "react-icons/fa";
+import { FaMountain } from "react-icons/fa";
 import { youtubeService } from "@/lib/youtube";
 
 // Define our playlist data
@@ -19,7 +20,7 @@ const playlists = {
     title: "Sufi Ney Meditation Music",
     description:
       "A transcendent collection of Sufi Ney flute meditation music, weaving mystical melodies and sacred stillness to awaken the soul and invite profound inner peace.",
-    icon: GiFlute,
+    icon: GiDervishSwords,
     playlistId: "PLB3xbTNRx64Q4HHkoILBdfdDQ3d2epOBw",
   },
   "echoes-of-rumi": {
@@ -33,7 +34,7 @@ const playlists = {
     title: "Totem – Native American Flute",
     description:
       "Totem – Native America Flute is a meditative sound journey inspired by ancient Native American music, where the flute's sacred voice connects the spirit to the earth, the wind, and timeless wisdom",
-    icon: GiFlute,
+    icon: FaMountain,
     playlistId: "PLB3xbTNRx64TozF1vwgcRx5s7rUwwx_R7",
   },
   "piano-echoes-of-serenity": {
@@ -42,6 +43,13 @@ const playlists = {
       "A gentle collection of relaxing piano melodies designed to calm the mind, enhance focus while reading or studying, and lull you into peaceful sleep",
     icon: PiPianoKeysFill,
     playlistId: "PLB3xbTNRx64RSHP8slh42Byi0neymleDp",
+  },
+  "satori-tibetan-mind": {
+    title: "Satori – Tibetan Mind – Soothing Music",
+    description:
+      "Satori – Tibetan Mind – Soothing Music is a serene collection of meditative soundscapes inspired by Tibetan wisdom, guiding you toward inner stillness, mindfulness, and spiritual awakening.",
+    icon: GiLotusFlower,
+    playlistId: "PLB3xbTNRx64RKim9NdGMMMQa1rMGlKvCY",
   },
 };
 

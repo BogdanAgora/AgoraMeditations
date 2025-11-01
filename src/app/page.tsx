@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Youtube, BookOpen, Sunrise } from "lucide-react";
 import { PiPianoKeysFill } from "react-icons/pi";
-import { GiFlute } from "react-icons/gi";
+import { GiFlute, GiDervishSwords, GiLotusFlower } from "react-icons/gi";
 import { FaPrayingHands } from "react-icons/fa";
+import { FaMountain } from "react-icons/fa";
 import { youtubeService } from "@/lib/youtube";
 
 async function getLatestVideos() {
@@ -157,7 +158,7 @@ export default async function Home() {
           <Link href="/playlists/sufi-ney-meditation-music">
             <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
               <CardHeader>
-                <GiFlute className="h-10 w-10 text-accent mb-2" />
+                <GiDervishSwords className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Sufi Ney Meditation Music</CardTitle>
               </CardHeader>
               <CardContent>
@@ -183,7 +184,7 @@ export default async function Home() {
           <Link href="/playlists/totem-native-american-flute">
             <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
               <CardHeader>
-                <GiFlute className="h-10 w-10 text-accent mb-2" />
+                <FaMountain className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Totem – Native American Flute</CardTitle>
               </CardHeader>
               <CardContent>
@@ -202,6 +203,19 @@ export default async function Home() {
               <CardContent>
                 <CardDescription>
                   A gentle collection of relaxing piano melodies designed to calm the mind, enhance focus while reading or studying, and lull you into peaceful sleep
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href="/playlists/satori-tibetan-mind">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+              <CardHeader>
+                <GiLotusFlower className="h-10 w-10 text-accent mb-2" />
+                <CardTitle className="font-headline">Satori – Tibetan Mind – Soothing Music</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Satori – Tibetan Mind – Soothing Music is a serene collection of meditative soundscapes inspired by Tibetan wisdom, guiding you toward inner stillness, mindfulness, and spiritual awakening.
                 </CardDescription>
               </CardContent>
             </Card>
