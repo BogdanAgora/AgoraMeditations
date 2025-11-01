@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ### How Music Can Supercharge Your Focus and Cognitive Performance (and When It Might Not\!)
 
 Ever find yourself instinctively reaching for your headphones when faced with a particularly daunting task? There's a compelling reason for that impulse. Music, far from being mere entertainment, wields surprising influence over our cognitive functions. But can your carefully curated playlist actually make you smarter, or at least more focused? Let's explore the captivating science behind music's impact on the mind.

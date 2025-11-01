@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 **Your Brain on Zen: A Beginner's Peek into the World of Meditation**
 
 **I. Hook: More Than Just Sitting Cross-Legged and Saying "Om"**

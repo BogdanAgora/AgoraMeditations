@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ## Calm in Every Note: Why Your Brain Chills Out to Relaxing Music
 
 **I. Introduction: The Universal Soothe-Sayer**

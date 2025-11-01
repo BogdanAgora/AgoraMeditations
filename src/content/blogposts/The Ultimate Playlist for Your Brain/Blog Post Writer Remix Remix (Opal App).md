@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ## The Ultimate Playlist for Your Brain: How Music Heals You (Seriously\!)
 
 **Intro: Hit Play on Healing**

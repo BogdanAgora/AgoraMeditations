@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ### I. Introduction: Are You Meditating or Mindful? (Or Both?)
 
 In today's hyper-connected, always-on world, "meditation" and "mindfulness" are often thrown around interchangeably – but what do they really mean? Are they simply synonyms, or does one offer something the other lacks? The very air crackles with a certain…ambiguity.

@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
   
 **A Head-Banging Deep Dive into the Neuroscience of Sound\!**  
 **Intro: Why Does That Song Make You FEEL Things?**

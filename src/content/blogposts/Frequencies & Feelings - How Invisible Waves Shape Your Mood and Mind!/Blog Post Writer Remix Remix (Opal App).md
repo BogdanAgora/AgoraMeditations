@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ## Frequencies & Feelings: How Invisible Waves Shape Your Mood and Mind\!
 
 ### Introduction: Is Your Vibe Just a Vibe, or Something More?

@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ### **I. Intro: Craving Calm? Create Your Own Sacred Space\!**
 
 Feeling frazzled, scattered, or just plain stressed? Ever wish you had a personal escape hatch to peace – a pocket dimension where the anxieties of modern life simply melt away? I suspect many of us do.

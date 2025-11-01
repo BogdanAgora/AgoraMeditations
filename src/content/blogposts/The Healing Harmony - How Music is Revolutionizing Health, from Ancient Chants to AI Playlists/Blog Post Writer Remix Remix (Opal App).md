@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 
 
 ### The Healing Harmony: How Music is Revolutionizing Health, from Ancient Chants to AI Playlists

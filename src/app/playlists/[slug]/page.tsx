@@ -8,26 +8,40 @@ import { youtubeService } from "@/lib/youtube";
 
 // Define our playlist data
 const playlists = {
-  "piano-melodies": {
-    title: "Piano Melodies",
+  "armenian-duduk-meditation-music": {
+    title: "Armenian Duduk Meditation Music",
     description:
-      "Calming piano pieces for relaxation, focus, and peaceful moments.",
+      "A soul-soothing collection of meditation and calming music featuring the Armenian Duduk, blending ancient melancholy with serene harmonies to guide you into deep inner peace and reflection.",
+    icon: GiFlute,
+    playlistId: "PLB3xbTNRx64Spv824QbZPmdivugVo71tK",
+  },
+  "sufi-ney-meditation-music": {
+    title: "Sufi Ney Meditation Music",
+    description:
+      "A transcendent collection of Sufi Ney flute meditation music, weaving mystical melodies and sacred stillness to awaken the soul and invite profound inner peace.",
+    icon: GiFlute,
+    playlistId: "PLB3xbTNRx64Q4HHkoILBdfdDQ3d2epOBw",
+  },
+  "echoes-of-rumi": {
+    title: "Echoes of Rumi",
+    description:
+      "Echoes of Rumi is a soulful journey of meditation and calm, inspired by the timeless poetry of Rumi, where every note whispers love, unity, and the divine rhythm of the heart.",
+    icon: FaPrayingHands,
+    playlistId: "PLB3xbTNRx64SYYvrsEfa2uYOFSep1a0Dq",
+  },
+  "totem-native-american-flute": {
+    title: "Totem – Native American Flute",
+    description:
+      "Totem – Native America Flute is a meditative sound journey inspired by ancient Native American music, where the flute's sacred voice connects the spirit to the earth, the wind, and timeless wisdom",
+    icon: GiFlute,
+    playlistId: "PLB3xbTNRx64TozF1vwgcRx5s7rUwwx_R7",
+  },
+  "piano-echoes-of-serenity": {
+    title: "Piano Echoes of Serenity",
+    description:
+      "A gentle collection of relaxing piano melodies designed to calm the mind, enhance focus while reading or studying, and lull you into peaceful sleep",
     icon: PiPianoKeysFill,
     playlistId: "PLB3xbTNRx64RSHP8slh42Byi0neymleDp",
-  },
-  "duduk-harmonies": {
-    title: "Duduk Harmonies",
-    description:
-      "Soulful and ancient duduk tunes for deep meditation and introspection.",
-    icon: GiFlute,
-    playlistId: "PLB3xbTNRx64TaRVQOvt03xdihYNeOn6qD",
-  },
-  "sufi-rhythms": {
-    title: "Sufi Rhythms",
-    description:
-      "Mystical and uplifting Sufi music to elevate your spirit and connect.",
-    icon: FaPrayingHands,
-    playlistId: "PLB3xbTNRx64Q4HHkoILBdfdDQ3d2epOBw",
   },
 };
 

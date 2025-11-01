@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 **From Heartbeat to Harmony: Your Brain on Music – A Journey to Calm**
 
 **I. Intro: Silence the Chaos, Turn Up the Tranquility\!**  

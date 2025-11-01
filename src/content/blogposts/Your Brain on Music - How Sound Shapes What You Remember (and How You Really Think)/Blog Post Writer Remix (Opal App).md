@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
  Your Brain on Music: How Sound Shapes What You Remember (and How You *Really* Think)
 
 **I. Intro: Beyond Just a Catchy Tune – Why Music Sticks (and Matters)**

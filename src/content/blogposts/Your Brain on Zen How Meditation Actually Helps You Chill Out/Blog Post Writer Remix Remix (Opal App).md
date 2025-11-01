@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 Your Brain on Zen: How Meditation Actually Helps You Chill Out (and Why Science is Catching Up\!)
 
 **I. Intro: Feeling the Frazzle? Meet Your Inner Peace Button\!**

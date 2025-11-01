@@ -1,3 +1,6 @@
+---
+date: '2025-11-01'
+---
 ### **I. The Secret Life of Your Brain on Meditation (It's Wild\!)**
 
 Ever heard that meditation is good for you? Well, it's not just a feel-good vibe; it's a full-blown brain makeover\! We're talking about real, measurable changes happening inside your noggin. Meditation, particularly mindfulness meditation, is recognized as a powerful practice that induces profound neurological and psychological transformations in the brain.
