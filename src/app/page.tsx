@@ -51,9 +51,7 @@ export default async function Home() {
             Welcome to AgoraMeditations
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover a sanctuary for your mind. Explore guided meditations,
-            soothing nature videos, and insightful articles to cultivate inner
-            peace and mindfulness.
+            Descover a sanctuary for your mind. Explore soothing nature videos, meditation soundscapes, relaxing music and insightful articles to cultivate inner peace and mindfulness.
           </p>
           <div className="flex justify-center gap-4">
             <Button
