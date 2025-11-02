@@ -1,3 +1,6 @@
+---
+date: '2025-11-02'
+---
 # Why Does Music Make Us Cry? A Deep Dive into the Science of Sound and Tears
 
 Ever felt that lump in your throat, those unexpected shivers, or tears welling up when a song hits just right? You're definitely not alone\! It's a near-universal experience; nearly 90% of us have shed a tear or two thanks to music. But it’s not as simple as sadness alone. It's not just about being "sad"; music taps into something much deeper, a complex dance between our brains, bodies, and personal stories. What is it about organized sound that has such a profound, visceral, and occasionally tear-jerking grip on us? Let's unpack this mystery, traveling from ancient philosophies to the bleeding edge of neuroscience.

@@ -141,12 +141,12 @@ export default async function Home() {
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link href="/playlists/armenian-duduk-meditation-music">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <GiFlute className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Armenian Duduk Meditation Music</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   A soul-soothing collection of meditation and calming music featuring the Armenian Duduk, blending ancient melancholy with serene harmonies to guide you into deep inner peace and reflection.
                 </CardDescription>
@@ -154,12 +154,12 @@ export default async function Home() {
             </Card>
           </Link>
           <Link href="/playlists/sufi-ney-meditation-music">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <GiDervishSwords className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Sufi Ney Meditation Music</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   A transcendent collection of Sufi Ney flute meditation music, weaving mystical melodies and sacred stillness to awaken the soul and invite profound inner peace.
                 </CardDescription>
@@ -167,12 +167,12 @@ export default async function Home() {
             </Card>
           </Link>
           <Link href="/playlists/echoes-of-rumi">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <FaPrayingHands className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Echoes of Rumi</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   Echoes of Rumi is a soulful journey of meditation and calm, inspired by the timeless poetry of Rumi, where every note whispers love, unity, and the divine rhythm of the heart.
                 </CardDescription>
@@ -180,12 +180,12 @@ export default async function Home() {
             </Card>
           </Link>
           <Link href="/playlists/totem-native-american-flute">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <FaMountain className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Totem – Native American Flute</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   Totem – Native America Flute is a meditative sound journey inspired by ancient Native American music, where the flute's sacred voice connects the spirit to the earth, the wind, and timeless wisdom
                 </CardDescription>
@@ -193,12 +193,12 @@ export default async function Home() {
             </Card>
           </Link>
           <Link href="/playlists/piano-echoes-of-serenity">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <PiPianoKeysFill className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Piano Echoes of Serenity</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   A gentle collection of relaxing piano melodies designed to calm the mind, enhance focus while reading or studying, and lull you into peaceful sleep
                 </CardDescription>
@@ -206,12 +206,12 @@ export default async function Home() {
             </Card>
           </Link>
           <Link href="/playlists/satori-tibetan-mind">
-            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer">
+            <Card className="shadow-lg hover:shadow-xl smooth-transition cursor-pointer h-full flex flex-col">
               <CardHeader>
                 <GiLotusFlower className="h-10 w-10 text-accent mb-2" />
                 <CardTitle className="font-headline">Satori – Tibetan Mind – Soothing Music</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription>
                   Satori – Tibetan Mind – Soothing Music is a serene collection of meditative soundscapes inspired by Tibetan wisdom, guiding you toward inner stillness, mindfulness, and spiritual awakening.
                 </CardDescription>
