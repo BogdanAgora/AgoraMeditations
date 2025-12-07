@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-11-12'
 ---
 ## The Soundtrack to Your Soul: How Music Guides Us Through Meditation and Prayer
 

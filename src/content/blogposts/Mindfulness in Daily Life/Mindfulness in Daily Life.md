@@ -1,5 +1,5 @@
 ---
-date: '2025-08-20'
+date: '2025-10-14'
 ---
 **Blog Post Title:** Don't Just Scroll Through Life: How to Master Mindfulness in a Wildly Distracted World
 

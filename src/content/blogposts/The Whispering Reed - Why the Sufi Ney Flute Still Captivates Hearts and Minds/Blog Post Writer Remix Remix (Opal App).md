@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-11-22'
 ---
 The Whispering Reed: Why the Sufi Ney Flute Still Captivates Hearts and Minds
 

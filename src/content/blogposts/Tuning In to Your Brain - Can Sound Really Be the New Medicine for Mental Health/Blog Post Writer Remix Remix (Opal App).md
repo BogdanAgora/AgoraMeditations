@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-11-26'
 ---
 ## Tuning In to Your Brain: Can Sound Really Be the New Medicine for Mental Health?
 

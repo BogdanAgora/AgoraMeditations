@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-12-06'
 ---
 Your Brain on Zen: How Meditation Actually Helps You Chill Out (and Why Science is Catching Up\!)
 

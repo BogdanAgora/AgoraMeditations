@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-10-21'
 ---
 ## How Ancient Cultures Tuned In: The Timeless Power of Sound for Healing and Spirit
 

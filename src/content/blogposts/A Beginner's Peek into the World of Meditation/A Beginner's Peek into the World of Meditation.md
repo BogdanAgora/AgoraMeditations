@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-09-09'
 ---
 **Your Brain on Zen: A Beginner's Peek into the World of Meditation**
 

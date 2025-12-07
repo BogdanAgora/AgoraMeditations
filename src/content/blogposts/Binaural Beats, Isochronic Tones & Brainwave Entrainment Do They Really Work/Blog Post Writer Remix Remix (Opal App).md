@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-09-16'
 ---
 ## Do Binaural Beats and Isochronic Tones Really Work, or Is It All Just Hype?
 

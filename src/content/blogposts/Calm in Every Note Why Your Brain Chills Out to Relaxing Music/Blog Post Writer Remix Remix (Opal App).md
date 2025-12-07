@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-09-19'
 ---
 ## Calm in Every Note: Why Your Brain Chills Out to Relaxing Music
 

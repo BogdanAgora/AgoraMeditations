@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-10-29'
 ---
 ### I. Introduction: Are You Meditating or Mindful? (Or Both?)
 

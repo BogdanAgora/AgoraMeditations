@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-10-07'
 ---
 ## How Music Rewires Your Brain to Beat Stress (and What Science Says\!)
 

@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-09-12'
 ---
   
 **A Head-Banging Deep Dive into the Neuroscience of Sound\!**  

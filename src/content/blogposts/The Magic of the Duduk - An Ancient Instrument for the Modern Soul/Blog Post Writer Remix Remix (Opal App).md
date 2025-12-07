@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-11-05'
 ---
 ## The Magic of the Duduk: An Ancient Instrument for the Modern Soul
 

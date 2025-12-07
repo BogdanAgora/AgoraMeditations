@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-10-17'
 ---
 ### Ditch the Noise: Why Rumi Says Silence is the *Real* Music of Your Soul
 

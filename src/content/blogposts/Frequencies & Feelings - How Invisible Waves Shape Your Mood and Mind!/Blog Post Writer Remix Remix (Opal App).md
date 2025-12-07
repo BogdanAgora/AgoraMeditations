@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-09-23'
 ---
 ## Frequencies & Feelings: How Invisible Waves Shape Your Mood and Mind\!
 

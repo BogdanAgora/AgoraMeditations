@@ -1,5 +1,5 @@
 ---
-date: '2025-12-07'
+date: '2025-10-24'
 ---
 # The Ecstatic Echo: Sufi Music and the Journey to Inner Awakening
 

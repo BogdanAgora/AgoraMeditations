@@ -1,5 +1,5 @@
 ---
-date: '2025-11-02'
+date: '2025-11-29'
 ---
 # Why Does Music Make Us Cry? A Deep Dive into the Science of Sound and Tears
 

@@ -1,5 +1,5 @@
 ---
-date: '2025-11-01'
+date: '2025-10-03'
 ---
 ### How Music Can Supercharge Your Focus and Cognitive Performance (and When It Might Not\!)
 
