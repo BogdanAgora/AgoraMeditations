@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ## The Soundtrack to Your Soul: How Music Guides Us Through Meditation and Prayer
 
 Ever find yourself humming a tune that instantly calms your nerves or uplifts your spirit? What if that power could unlock deeper levels of meditation and prayer? Music isn't just background noise; it's a centuries-old, scientifically-backed ally in our quest for inner peace and spiritual connection. Let's explore how sound helps us transcend the everyday and find the sacred in stillness.

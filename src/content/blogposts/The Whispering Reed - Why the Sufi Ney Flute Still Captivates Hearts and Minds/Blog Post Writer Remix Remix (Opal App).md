@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 The Whispering Reed: Why the Sufi Ney Flute Still Captivates Hearts and Minds
 
 **I. Introduction: A Breath of Spirit**

@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 # The Ecstatic Echo: Sufi Music and the Journey to Inner Awakening
 
 ## 1\. Beyond the Beat: What Exactly is Sufi Music?

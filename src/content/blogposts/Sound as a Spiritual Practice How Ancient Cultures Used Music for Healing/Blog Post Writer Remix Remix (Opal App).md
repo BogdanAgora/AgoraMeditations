@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ## How Ancient Cultures Tuned In: The Timeless Power of Sound for Healing and Spirit
 
 ### I. Intro: Beyond Just Good Vibes – What if Sound Could Heal Your Soul?

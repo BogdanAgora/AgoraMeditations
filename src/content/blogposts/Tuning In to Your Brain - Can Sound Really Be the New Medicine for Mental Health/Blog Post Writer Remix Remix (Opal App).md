@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ## Tuning In to Your Brain: Can Sound Really Be the New Medicine for Mental Health?
 
 ### I. Intro: More Than Just Good Vibes

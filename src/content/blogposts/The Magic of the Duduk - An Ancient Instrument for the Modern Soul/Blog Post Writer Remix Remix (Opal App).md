@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ## The Magic of the Duduk: An Ancient Instrument for the Modern Soul
 
 Ever been stopped in your tracks by a sound that seems to bypass your ears and go straight to your soul? Chances are, you've encountered the duduk. This isn't just an instrument; it's a disarmingly simple-looking wooden pipe that carries within it the soulful whisper of ancient Armenia, a voice that seems to transcend time itself. Prepare to journey into the captivating story of this unassuming instrument, a story that weaves together the past, present, and perhaps even the future of music itself.

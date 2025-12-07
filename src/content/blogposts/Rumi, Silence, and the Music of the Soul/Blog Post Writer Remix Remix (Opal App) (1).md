@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ### Ditch the Noise: Why Rumi Says Silence is the *Real* Music of Your Soul
 
 You've likely stumbled upon a Rumi quote elegantly gracing an Instagram post or perhaps caught whispers of his celebrated poetic brilliance. But were you aware that this 13th-century mystical luminary harbored a rather unexpected secret to unlocking spiritual enlightenment?

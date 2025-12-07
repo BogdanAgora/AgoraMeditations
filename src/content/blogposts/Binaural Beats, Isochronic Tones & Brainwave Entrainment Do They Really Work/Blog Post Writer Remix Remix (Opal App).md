@@ -1,3 +1,6 @@
+---
+date: '2025-12-07'
+---
 ## Do Binaural Beats and Isochronic Tones Really Work, or Is It All Just Hype?
 
 **I. Intro: The Lure of Hacking Your Brain with Sound**
