@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { createElement } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import PlaylistPage from '../[slug]/page';
 import { youtubeService } from '@/lib/youtube';
@@ -13,7 +14,7 @@ vi.mock('@/lib/youtube', () => ({
 
 // Mock Next.js components
 vi.mock('next/image', () => ({
-  default: ({ src, alt, ...props }: any) => <img src={src} alt={alt} {...props} />,
+  default: ({ src, alt, ...props }: any) => createElement('img', { src, alt, ...props }),
 }));
 
 vi.mock('next/navigation', () => ({
